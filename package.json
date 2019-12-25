@@ -1,0 +1,23 @@
+{
+  "name": "gene-rator",
+  "version": "1.0.0",
+  "description": "A file generator",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rusith/gene-rator.git"
+  },
+  "keywords": [
+    "file",
+    "generator"
+  ],
+  "author": "Rusith",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rusith/gene-rator/issues"
+  },
+  "homepage": "https://github.com/rusith/gene-rator#readme"
+}
