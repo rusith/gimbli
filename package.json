@@ -4,7 +4,8 @@
   "description": "A file generator",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "testWithCoverage": "jest --coverage"
   },
   "repository": {
     "type": "git",
