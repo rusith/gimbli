@@ -1,0 +1,17 @@
+name: Test the Code
+on: push
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [10]
+    steps:
+      - name: Run all Tests Using Jest
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+        run: |
+          npm install
+          npm test
