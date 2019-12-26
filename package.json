@@ -4,7 +4,7 @@
   "description": "A file generator",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -19,5 +19,11 @@
   "bugs": {
     "url": "https://github.com/rusith/gene-rator/issues"
   },
-  "homepage": "https://github.com/rusith/gene-rator#readme"
+  "homepage": "https://github.com/rusith/gene-rator#readme",
+  "devDependencies": {
+    "@types/jest": "^24.0.24",
+    "jest": "^24.9.0",
+    "ts-jest": "^24.2.0",
+    "typescript": "^3.7.4"
+  }
 }
