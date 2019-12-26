@@ -1,15 +1,9 @@
-import {readInputAsCommand} from "./cli/readCommand";
-import {getRelevantArguments} from "./cli/utils";
-import {validateCommandLineInputs} from "./cli/validateInputs";
+import {CliUtils} from "./cli/concrete/CliUtils";
+import {CommandLineInputValidator} from "./cli/concrete/CommandLineInputValidator";
+import {CommandReader} from "./cli/concrete/CommandReader";
+import Gimbli from "./Gimbli";
 
 (function (args: string[]) {
-    const validated = validateCommandLineInputs(args);
-    if (!validated.isValid) {
-        validated.errors.forEach(e => console.error(e));
-        return;
-    }
-    
-    args = getRelevantArguments(args);
-    const command = readInputAsCommand(args);
-    console.log(command);
+    const gimbli =  new Gimbli(new CommandLineInputValidator(), new CommandReader(), new CliUtils());
+    gimbli.run(args);
 })(process.argv);

@@ -1,0 +1,3 @@
+describe("TemplateDiscoveryUtils.isTemplateFolderPresent", () => {
+    
+});

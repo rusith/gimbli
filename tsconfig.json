@@ -3,7 +3,6 @@
     "lib": ["es2018", "DOM"],
     "module": "commonjs",
     "target": "es2018",
-    "sourceMap": true,
     "inlineSourceMap": true,
     "baseUrl": "./src"
   },
