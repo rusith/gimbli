@@ -1,7 +1,7 @@
-import {ICommandLineInputValidator} from "../abstract/ICommandLineInputValidator";
+import {ICommandLineInputValidator} from "..";
 
 export class CommandLineInputValidator implements ICommandLineInputValidator {
-    validate(args: string[]) {
+    public validate(args: string[]) {
         if (args.length < 3) {
             return {
                 errors: ["Not enough arguments provided"],
@@ -12,6 +12,6 @@ export class CommandLineInputValidator implements ICommandLineInputValidator {
         return  {
             errors: [],
             isValid: true,
-        }
+        };
     }
 }

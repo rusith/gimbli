@@ -1,29 +1,29 @@
-import {ICliUtils} from "../cli/abstract/ICliUtils";
-import {ICommandLineInputValidator} from "../cli/abstract/ICommandLineInputValidator";
-import {ICommandReader} from "../cli/abstract/ICommandReader";
+import {ICliUtils} from "../cli";
+import {ICommandLineInputValidator} from "../cli";
+import {ICommandReader} from "../cli";
 import ICommand from "../cli/models/ICommand";
 import ICommandLilneArgumentValidationResult from "../cli/models/ICommandLilneArgumentValidationResult";
 import Gimbli from "../Gimbli";
 
 class SuccessValidator implements ICommandLineInputValidator {
-    validate(args: string[]): ICommandLilneArgumentValidationResult {
+    public validate(args: string[]): ICommandLilneArgumentValidationResult {
         return {
-            isValid: true,
             errors: null,
-        }
+            isValid: true,
+        };
     }
 }
 
 class SuccessReader implements ICommandReader {
-    read(args: string[]): ICommand {
+    public read(args: string[]): ICommand {
         return {
-            type: "any"
+            type: "any",
         };
     }
 }
 
 class UtilsStub implements ICliUtils {
-    getRelevantArguments(args: string[]): string[] {
+    public getRelevantArguments(args: string[]): string[] {
         return [];
     }
 }

@@ -14,7 +14,7 @@ describe("CliUtils.getRelevantArguments", () => {
     });
 
     test("Get arguments should return empty list if input length is two", () => {
-        let result = utils.getRelevantArguments(["a", "b"]);
+        const result = utils.getRelevantArguments(["a", "b"]);
         expect(result.length).toBe(0);
     });
 

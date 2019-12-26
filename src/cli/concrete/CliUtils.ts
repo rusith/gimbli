@@ -1,8 +1,8 @@
-import {ICliUtils} from "../abstract/ICliUtils";
+import {ICliUtils} from "..";
 
 export class CliUtils implements ICliUtils {
-    getRelevantArguments(args: string[]): string[] {
-        if (args == null) return [];
+    public getRelevantArguments(args: string[]): string[] {
+        if (args == null) { return []; }
         return args.slice(2);
     }
 }

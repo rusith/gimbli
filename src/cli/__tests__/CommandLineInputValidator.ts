@@ -16,7 +16,6 @@ describe("CommandLineInputValidator.validate", () => {
         expect(result.errors[0]).toBe("Not enough arguments provided");
     });
 
-
     test("Should be valid if the arguments are sufficient", () => {
         const args = ["exe", "path", "component"]; // default stuff
         const result = validator.validate(args);

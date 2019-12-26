@@ -1,4 +1,4 @@
-import * as fs from "fs"
+import * as fs from "fs";
 /**
  * Get current location which the script is running
  */
@@ -17,7 +17,6 @@ export function getFilesOfDirectory(dir: string): Promise<string[]> {
             } else {
                 return resolve(files);
             }
-        })
+        });
     });
 }
-

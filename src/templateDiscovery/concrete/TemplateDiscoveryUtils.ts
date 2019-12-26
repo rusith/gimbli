@@ -1,10 +1,11 @@
 import {ITemplateDiscoveryUtils} from "..";
 
-export class TemplateDiscoveryUtils implements ITemplateDiscoveryUtils{
-    getTemplateFileOfFolder(folder: string) {
-        
+export class TemplateDiscoveryUtils implements ITemplateDiscoveryUtils {
+    public getTemplateFileOfFolder(folder: string) {
+        return null;
     }
 
-    isTemplateFolderPresent(folder: string) {
+    public isTemplateFolderPresent(folder: string) {
+        return null;
     }
 }
