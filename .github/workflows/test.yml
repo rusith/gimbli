@@ -14,7 +14,7 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
       - name: Install TsLint
-        run: npm i -g tslint
+        run: npm i -g tslint typescript
       - name: Lint Using TsLint
         run: tslint --project .
   test:
