@@ -8,10 +8,11 @@ jobs:
       matrix:
         node: [10]
     steps:
-      - name: Run all Tests Using Jest
+      - name: Setup Node JS
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node }}
-        run: |
-          npm install
-          npm test
+      - name: Install Node Packages
+        run: npm install
+      - name: Run Tests With Jest
+        run: npm test
