@@ -13,7 +13,11 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node }}
+      - name: Install Global Dependancies
+        run: npm install codecov -g
       - name: Install Node Packages
         run: npm install
       - name: Run Tests With Jest
-        run: npm test
+        run: |
+          npm test
+          codecov --token=${{ secrets.CODECOV_TOKEN }}
