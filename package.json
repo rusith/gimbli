@@ -28,5 +28,8 @@
     "ts-jest": "^24.2.0",
     "tslint": "^5.20.1",
     "typescript": "^3.7.4"
+  },
+  "dependencies": {
+    "reflect-metadata": "^0.1.13"
   }
 }

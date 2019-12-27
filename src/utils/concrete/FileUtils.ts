@@ -1,4 +1,5 @@
 import * as fs from "fs";
+import * as path from "path";
 import {IFileUtils} from "..";
 
 export class FileUtils implements IFileUtils {
@@ -8,6 +9,20 @@ export class FileUtils implements IFileUtils {
 
     public getFilesOfDirectory(directory: string): Promise<string[]> {
         return this.readFiles(directory, (f) => f.isFile());
+    }
+
+    public getCurrentDirectory(): string {
+        return process.cwd();
+    }
+
+    public nextDirectory(current: string, next: string): string {
+        if (!current) {
+            return next;
+        }
+        if (!next) {
+            return current;
+        }
+        return path.join(current, next);
     }
 
     private readFiles(dir: string, filter: (dir: fs.Dirent) => boolean) {
