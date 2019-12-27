@@ -10,7 +10,9 @@ export class TemplateReader implements ITemplateReader {
         if (!content) {
             throw new Error("Template should not be empty");
         }
-        // Read file content
-        return undefined;
+        return  {
+            ...template,
+            content,
+        };
     }
 }

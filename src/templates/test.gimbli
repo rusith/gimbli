@@ -1,14 +1,4 @@
-@@arga
-name
-ok: bool 
-@@
-
-
-
-@@ file $path$/$name$.tsx { @@
-
-@@if  ok {@@   @@}@@
-
-@@}@@
+#@ file() { #@
+#@}#@
 
 

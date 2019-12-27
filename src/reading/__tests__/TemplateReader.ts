@@ -1,6 +1,6 @@
 import {ITemplateReader} from "..";
+import {TemplateReader} from "..";
 import {IFileUtils} from "../../utils";
-import {TemplateReader} from "../concrete/TemplateReader";
 
 describe("TemplateReader.read", () => {
     test("Template reader should fail if the template is empty or null", async () => {
@@ -38,5 +38,33 @@ describe("TemplateReader.read", () => {
             },
         };
         await testIt(nullFileUtils); // Empty
+    });
+
+    test("Template reader should read the content of the file", async () => {
+
+        const content = `
+        test
+dskaf
+dsafd
+
+djakjfd
+`;
+        const fileUtils: IFileUtils = {
+            getFileContent(pathToFile: string): Promise<string> {
+                return Promise.resolve(content);
+            },
+        };
+
+        const reader: ITemplateReader = new TemplateReader(fileUtils);
+        const template = await reader.read({
+            file:  {
+                fullPath: "",
+                name: "test",
+                nameWithExtension: "test.gimbli",
+            },
+            name: "test",
+        });
+
+        expect(template.content).toBe(content);
     });
 });
