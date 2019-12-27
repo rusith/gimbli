@@ -25,6 +25,18 @@ export class FileUtils implements IFileUtils {
         return path.join(current, next);
     }
 
+    public getFileContent(pathToFile: string): Promise<string> {
+        return new Promise<string>((resolve, reject) => {
+            fs.readFile(pathToFile, (err, data) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(data.toString());
+                }
+            });
+        });
+    }
+
     private readFiles(dir: string, filter: (dir: fs.Dirent) => boolean) {
         return new Promise<string[]>((resolve, reject) => {
             fs.readdir(dir, { withFileTypes: true}, (err, files) => {

@@ -2,9 +2,16 @@ import {ITemplateDiscoveryUtils, ITemplateFile, TemplateFinder} from "..";
 import {FileUtils} from "../../utils";
 
 describe("TemplateFinder.findTemplate", () => {
-    test("Should fail if the name is not valid", () => {
+    test("Should fail if the name is not valid", async () => {
         const finder = new TemplateFinder(null, null);
-        expect(finder.findTemplate(null)).rejects.toEqual(new Error("Invalid command name"));
+        let err: Error = null;
+        try {
+            await finder.findTemplate(null);
+        } catch (e) {
+            err = e;
+        }
+
+        expect(err!.message).toBe("Invalid command name");
     });
 
     test("Should return from the template folder if the template file exists", async () => {

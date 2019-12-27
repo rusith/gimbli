@@ -7,6 +7,9 @@ export class TemplateFinder implements ITemplateFinder {
     }
 
     public async findTemplate(name: string): Promise<ITemplate> {
+        if (!name) {
+            throw new Error("Invalid command name");
+        }
         const currentDirectory = this.fileUtils.getCurrentDirectory();
         if (await this.utils.isTemplateFolderPresent(currentDirectory)) {
             const files =

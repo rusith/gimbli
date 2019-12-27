@@ -3,4 +3,5 @@ export interface IFileUtils {
     getDirectoriesInsideDirectory?(directory: string): Promise<string[]>;
     getCurrentDirectory?(): string;
     nextDirectory?(current: string, next: string): string;
+    getFileContent?(pathToFile: string): Promise<string>;
 }

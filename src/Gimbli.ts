@@ -19,6 +19,7 @@ export default class Gimbli {
         args = this.cliUtils.getRelevantArguments(args);
         const command = this.reader.read(args);
         const template = await this.templateFinder.findTemplate(command.type);
+        // tslint:disable-next-line:no-console
         console.log(template);
     }
 }
