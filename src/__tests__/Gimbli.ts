@@ -1,9 +1,11 @@
-import {ICliUtils} from "../cli";
+import {CliUtils, CommandLineInputValidator, CommandReader, ICliUtils} from "../cli";
 import {ICommandLineInputValidator} from "../cli";
 import {ICommandReader} from "../cli";
 import ICommand from "../cli/models/ICommand";
 import ICommandLilneArgumentValidationResult from "../cli/models/ICommandLilneArgumentValidationResult";
 import Gimbli from "../Gimbli";
+import {TemplateDiscoveryUtils, TemplateFinder} from "../templateDiscovery";
+import {FileUtils} from "../utils";
 
 class SuccessValidator implements ICommandLineInputValidator {
     public validate(args: string[]): ICommandLilneArgumentValidationResult {
@@ -30,7 +32,14 @@ class UtilsStub implements ICliUtils {
 
 describe("Gimbli.run", () => {
     test("Should run without error", () => {
-        const gimbli = new Gimbli(new SuccessValidator(), new SuccessReader(), new UtilsStub());
+
+        const fileUtils = new FileUtils();
+        const commandLineInputValidator = new CommandLineInputValidator();
+        const reader = new CommandReader();
+        const cliUtils = new CliUtils();
+        const templateDiscoveryUtils = new TemplateDiscoveryUtils(fileUtils);
+        const templateFinder = new TemplateFinder(templateDiscoveryUtils, fileUtils);
+        const gimbli =  new Gimbli(commandLineInputValidator, reader, cliUtils, templateFinder);
         gimbli.run(process.argv);
     });
 });

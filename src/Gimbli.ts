@@ -1,16 +1,14 @@
 import {ICliUtils} from "./cli";
 import {ICommandLineInputValidator} from "./cli";
 import {ICommandReader} from "./cli";
+import {ITemplateFinder} from "./templateDiscovery";
 
 export default class Gimbli {
     constructor(private validator: ICommandLineInputValidator,
-                private reader: ICommandReader, private cliUtils: ICliUtils) {
-        this.reader = reader;
-        this.validator = validator;
-        this.cliUtils = cliUtils;
+                private reader: ICommandReader, private cliUtils: ICliUtils, private templateFinder: ITemplateFinder) {
     }
 
-    public run(args: string[]) {
+    public async run(args: string[]) {
         const validated = this.validator.validate(args);
         if (!validated.isValid) {
             // tslint:disable-next-line:no-console
@@ -20,8 +18,7 @@ export default class Gimbli {
 
         args = this.cliUtils.getRelevantArguments(args);
         const command = this.reader.read(args);
-
-        // tslint:disable-next-line:no-console
-        console.log(command);
+        const template = await this.templateFinder.findTemplate(command.type);
+        console.log(template);
     }
 }
