@@ -14,7 +14,9 @@ export class RegexUtils implements IRegexUtils {
         return matches.map((m) => {
             return {
                 content: m[0],
+                end: m.index + m[0].length,
                 groups: m.slice(1),
+                start: m.index,
             };
         });
     }

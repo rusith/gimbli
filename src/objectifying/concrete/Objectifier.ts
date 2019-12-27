@@ -7,17 +7,27 @@ export class Objectifier implements IObjectifier {
     constructor(private regex: IRegexUtils) {}
 
     public findFileSections(fileContent: string): IFileSection[] {
-        const fileRegex = /@#\s*file\s*\((.*)\)@#([\s\S]*)@#@/;
-        const matches = this.regex.matchMultiple(fileRegex, fileContent);
-        return matches.map((match) => {
+        const startRegex = /@#\s*file\s*\((.*)\)@#/;
+        const endRegex = /@#@/;
+        const startMatches = this.regex.matchMultiple(startRegex, fileContent);
+        const endMatches = this.regex.matchMultiple(endRegex, fileContent);
+
+        return startMatches.map((match, index) => {
+            const end = endMatches[index];
             return {
                 config: match.groups[0],
-                content: match.groups[1],
+                content: fileContent.substring(match.end, end.start),
             };
         });
     }
 
     public objectify(template: ITemplate): ITemplateDefinition {
-        return undefined;
+        const files = this.findFileSections(template.content);
+        return {
+            files: files.map((fs) => ({
+                config: fs.config,
+                content: fs.content,
+            })),
+        };
     }
 }
