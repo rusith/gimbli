@@ -1,5 +1,6 @@
+import ICommand from "../../cli/models/ICommand";
 import {ITemplate} from "../../models";
 
 export interface ITemplateFinder {
-    findTemplate(name: string): Promise<ITemplate>;
+    findTemplate(command: ICommand): Promise<ITemplate>;
 }

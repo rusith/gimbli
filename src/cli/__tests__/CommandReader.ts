@@ -11,4 +11,9 @@ describe("CommandReader.read", () => {
         testInput(["component"]);
         testInput(["item"]);
     });
+
+    test("Should read the first input as Type ", () => {
+        const command = commandReader.read(["component", "component/App"]);
+        expect(command.path).toBe("component/App");
+    });
 });

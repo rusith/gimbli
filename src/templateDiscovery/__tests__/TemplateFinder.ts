@@ -29,8 +29,9 @@ describe("TemplateFinder.findTemplate", () => {
         };
 
         const finder = new TemplateFinder(utils, new FileUtils());
-        const file = await finder.findTemplate("test");
+        const file = await finder.findTemplate({ type: "test", path: "App"});
         expect(file.name).toBe("test");
+        expect(file.path).toBe("App");
         expect(file.file.fullPath).toBe("templates/test.gimbli");
     });
 });

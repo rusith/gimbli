@@ -53,14 +53,16 @@ ${content}
 @#@
         k`;
             const objectifier = new Objectifier(new RegexUtils());
-            const result = objectifier.objectify({
+            const template = {
                 content: text,
                 file: null,
                 name: "test",
-            });
+            };
+            const result = objectifier.objectify(template);
             expect(result.files.length).toBe(1);
             expect(result.files[0].config).toBe(config);
             expect(result.files[0].content).toBe(`\n${content}\n`);
+            expect(result.template).toBe(template);
         }
 
         testContent("content one", "config one");

@@ -28,6 +28,7 @@ export class Objectifier implements IObjectifier {
                 config: fs.config,
                 content: fs.content,
             })),
+            template,
         };
     }
 }
