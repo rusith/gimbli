@@ -7,12 +7,13 @@ describe("TemplateReader.read", () => {
         async function testIt(fileUtils: IFileUtils) {
             const reader: ITemplateReader = new TemplateReader(fileUtils);
             const template = reader.read({
-                file:  {
+                file: {
                     fullPath: "",
                     name: "test",
                     nameWithExtension: "test.gimbli",
                 },
                 name: "test",
+                path: "",
             });
 
             let err: Error = null;
@@ -25,7 +26,7 @@ describe("TemplateReader.read", () => {
         }
 
         const emptyFileUtils: IFileUtils = {
-            getFileContent(pathToFile: string): Promise<string> {
+            getFileContent(): Promise<string> {
                 return Promise.resolve("");
             },
         };
@@ -33,7 +34,7 @@ describe("TemplateReader.read", () => {
         await testIt(emptyFileUtils);
 
         const nullFileUtils: IFileUtils = {
-            getFileContent(pathToFile: string): Promise<string> {
+            getFileContent(): Promise<string> {
                 return Promise.resolve(null);
             },
         };
@@ -50,7 +51,7 @@ dsafd
 djakjfd
 `;
         const fileUtils: IFileUtils = {
-            getFileContent(pathToFile: string): Promise<string> {
+            getFileContent(): Promise<string> {
                 return Promise.resolve(content);
             },
         };
@@ -63,6 +64,7 @@ djakjfd
                 nameWithExtension: "test.gimbli",
             },
             name: "test",
+            path: "",
         });
 
         expect(template.content).toBe(content);

@@ -1,4 +1,5 @@
 import {Objectifier} from "..";
+import {ITemplate} from "../../models";
 import {RegexUtils} from "../../utils/concrete/RegexUtils";
 
 describe("Objectifier.findFileSections", () => {
@@ -53,10 +54,11 @@ ${content}
 @#@
         k`;
             const objectifier = new Objectifier(new RegexUtils());
-            const template = {
+            const template: ITemplate = {
                 content: text,
                 file: null,
                 name: "test",
+                path: "",
             };
             const result = objectifier.objectify(template);
             expect(result.files.length).toBe(1);
