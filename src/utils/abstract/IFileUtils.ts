@@ -4,4 +4,5 @@ export interface IFileUtils {
     getCurrentDirectory?(): string;
     nextDirectory?(current: string, next: string): string;
     getFileContent?(pathToFile: string): Promise<string>;
+    writeFile?(path: string, content: string): Promise<void> ;
 }

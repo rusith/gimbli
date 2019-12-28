@@ -1,13 +1,23 @@
 import * as path from "path";
 import {IConfig, ITemplateProcessor} from "..";
-import {ITemplate, ITemplateDefinition} from "../../models";
+import {ICommandSet, IFileDefinition, ITemplate, ITemplateDefinition} from "../../models";
 import {IFileUtils} from "../../utils";
 
 export class TemplateProcessor implements ITemplateProcessor {
     constructor(private fileUtils: IFileUtils) {}
 
-    public process() {
-        return null;
+    public process(def: ITemplateDefinition): ICommandSet {
+        const writeFiles = def.files
+            .map((file) => {
+                return {
+                    content: this.processContent(file),
+                    fullPath: this.processConfig(file.config, def.template).fullPath,
+                };
+            });
+
+        return {
+            writeFiles,
+        };
     }
 
     public processConfig(config: string, def: ITemplate): IConfig {
@@ -28,5 +38,9 @@ export class TemplateProcessor implements ITemplateProcessor {
         return {
             fullPath: p,
         };
+    }
+
+    public processContent(file: IFileDefinition): string {
+        return file.content;
     }
 }

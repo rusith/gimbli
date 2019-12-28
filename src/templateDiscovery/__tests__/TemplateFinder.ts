@@ -34,4 +34,24 @@ describe("TemplateFinder.findTemplate", () => {
         expect(file.path).toBe("App");
         expect(file.file.fullPath).toBe("templates/test.gimbli");
     });
+
+    test("Should throw an error if not in templates folder", async () => {
+        const utils: ITemplateDiscoveryUtils = {
+            async getTemplateFileOfFolder(folder: string): Promise<ITemplateFile[]> {
+                return [];
+            },
+            isTemplateFolderPresent(folder: string) {
+                return true;
+            },
+        };
+
+        const finder = new TemplateFinder(utils, new FileUtils());
+        let err: Error = null;
+        try {
+            await finder.findTemplate({ type: "test", path: "App"});
+        } catch (e) {
+            err = e;
+        }
+        expect(err!.message).toBe(`Template with name (test) not found`);
+    });
 });

@@ -1,5 +1,6 @@
 import {IConfig} from "..";
+import {ICommandSet, ITemplateDefinition} from "../../models";
 
 export interface ITemplateProcessor {
-    process();
+    process(def: ITemplateDefinition): ICommandSet;
 }

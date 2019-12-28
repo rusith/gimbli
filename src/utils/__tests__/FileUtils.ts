@@ -33,6 +33,19 @@ describe("FileUtils.nextDirectory", () => {
         const utils: IFileUtils = new FileUtils();
         expect(utils.nextDirectory("a", "b")).toBe(path.join(path.join("a", "b")));
         expect(utils.nextDirectory("/user/abs-cks/test/", "next--folder"))
-            .toBe(path.join(path.join("/user/abs-cks/test/", "next--folder")));
+            .toBe(path.join("/user/abs-cks/test/", "next--folder"));
+    });
+});
+
+describe("FileUtils.writeFile", () => {
+    test("Should fail if file name is empty", async () => {
+        const u: IFileUtils = new FileUtils();
+        let err: Error = null;
+        try {
+            await u.writeFile("", "");
+        } catch (e) {
+            err = e;
+        }
+        expect(err!.message).toBe("Cannot write to file without a specified path");
     });
 });

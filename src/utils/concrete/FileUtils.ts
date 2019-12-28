@@ -37,16 +37,30 @@ export class FileUtils implements IFileUtils {
         });
     }
 
+    public async writeFile(filePath: string, content: string): Promise<void> {
+        if (!filePath) {
+            throw new Error("Cannot write to file without a specified path");
+        }
+        return new Promise<void>((resolve, reject) => {
+            fs.writeFile(filePath, content, (err) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve();
+                }
+            });
+        });
+    }
+
     private readFiles(dir: string, filter: (dir: fs.Dirent) => boolean) {
         return new Promise<string[]>((resolve, reject) => {
             fs.readdir(dir, { withFileTypes: true}, (err, files) => {
                 if (err) {
                     reject(err);
                 } else {
-                    resolve(files.filter(filter).map((f) => f.name));
+                    resolve(files.filter(filter).map((f) => path.join(dir, f.name)));
                 }
             });
         });
     }
-
 }

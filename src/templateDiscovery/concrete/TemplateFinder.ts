@@ -15,12 +15,16 @@ export class TemplateFinder implements ITemplateFinder {
         if (await this.utils.isTemplateFolderPresent(currentDirectory)) {
             const files =
                 await this.utils.getTemplateFileOfFolder(this.fileUtils.nextDirectory(currentDirectory, "templates"));
-            const file = files.filter((f) => f.name === command.type)[0];
-            return {
-                file,
-                name: file.name,
-                path: command.path,
-            };
+            const templateFiles = files.filter((f) => f.name === command.type);
+
+            if (templateFiles.length) {
+                return {
+                    file: templateFiles[0],
+                    name: templateFiles[0].name,
+                    path: command.path,
+                };
+            }
         }
+        throw new Error(`Template with name (${command.type}) not found`);
     }
 }
