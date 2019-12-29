@@ -5,3 +5,4 @@ export * from "./concrete/CommandLineInputValidator";
 export * from "./abstract/ICliUtils";
 export * from "./abstract/ICommandLineInputValidator";
 export * from "./abstract/ICommandReader";
+export * from "./models/ICommandArgument";
