@@ -12,20 +12,35 @@ export class CommandReader implements ICommandReader {
     public readExtraArguments(args: string[]): ICommandArgument[] {
         const extra = args.splice(2);
 
-        const result: ICommandArgument[] = [];
-        let previous: string = null;
-        for (let i = 0, l = extra.length; i < l ; i++ ) {
-            const current = extra[i];
-            const next = l > i + 1 ? extra[i + 1] : null;
-            if (current.startsWith("-")) {
-                result.push({
-                    name: current.substring(1),
-                    value: next ? next.startsWith("-") ? true : next : true,
-                });
-            }
-            previous = current;
-        }
+        const res: ICommandArgument[] = [];
 
-        return result;
+        const isAName = (arg: string) => arg.startsWith("-");
+        const hasNext = (index: number) => extra.length - 1 > index;
+        const getArgName = (arg: string) => arg.substring(1);
+        const addToResult = (name: string, value: any) => res.push({ name: getArgName(name), value });
+
+        const process = (index) => {
+            if (extra.length - 1 < index) {
+                return;
+            }
+            const arg = extra[index];
+            if (isAName(arg)) {
+                if (hasNext(index)) {
+                    const next = extra[index + 1];
+                    if (isAName(next)) {
+                        addToResult(arg, true);
+                    } else {
+                        addToResult(arg, next);
+                    }
+                } else {
+                    addToResult(arg, true);
+                }
+            }
+            process(index + 1);
+        };
+
+        process(0);
+
+        return res;
     }
 }
