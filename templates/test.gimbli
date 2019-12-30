@@ -1,12 +1,29 @@
-@#args#@
-className
-abstract
+@# file($path/$name.tsx) #@
+import React from "react";
+import styles from "./$name.module.css";
+
+interface IProps {
+}
+
+const Component: React.FC<IProps> = () => {
+    return (
+      <div className={styles.root}>
+      </div>
+    );
+};
+
+export default Component;
 @#@
 
-@# file($path/section/actions.ts) #@
-export {{#if abstract}}abstract{{/if}} class {{className}} {
-    // TODO Fill up
+
+@# file($path/$name.module.css) #@
+.root {
+
 }
 @#@
 
 
+@# file($path/index.ts) #@
+import $name form "./$name.tsx";
+export default $name;
+@#@

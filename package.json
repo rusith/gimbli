@@ -1,27 +1,35 @@
 {
-  "name": "gene-rator",
+  "name": "gimbli",
   "version": "1.0.0",
-  "description": "A file generator",
+  "description": "A file generator that can generate multiple files from a single command with Handlebars support",
   "main": "index.js",
+  "types": "lib/index.d.ts",
+  "files": ["lib/**/*"],
   "scripts": {
     "test": "jest",
+    "lint": "tslint -p tsconfig.json",
+    "build": "tsc",
     "watchTest": "jest --watchAll",
-    "testWithCoverage": "jest --coverage"
+    "testWithCoverage": "jest --coverage",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run lint && npm run test",
+    "preversion" : "npm run lint"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rusith/gene-rator.git"
+    "url": "git+https://github.com/rusith/gimbli"
   },
   "keywords": [
     "file",
-    "generator"
+    "generator",
+    "handlebars"
   ],
-  "author": "Rusith",
+  "author": "Shanaka Rusith",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/rusith/gene-rator/issues"
+    "url": "https://github.com/rusith/gimbli/issues"
   },
-  "homepage": "https://github.com/rusith/gene-rator#readme",
+  "homepage": "https://github.com/rusith/gimbli",
   "devDependencies": {
     "@types/handlebars": "^4.1.0",
     "@types/jest": "^24.0.24",
@@ -32,7 +40,6 @@
     "typescript": "^3.7.4"
   },
   "dependencies": {
-    "handlebars": "^4.5.3",
-    "reflect-metadata": "^0.1.13"
+    "handlebars": "^4.5.3"
   }
 }
