@@ -6,6 +6,7 @@ jest.mock("../../utils/fileUtils");
 describe("CommandWriter.writeFileCommand", () => {
     test("Should call the internal write function with correct data", async () => {
         const commands: ICommandSet = {
+            template: null,
             writeFiles: [{
                 content: "content",
                 fullPath: "/rusith/app/App.tsx",
@@ -34,6 +35,7 @@ describe("CommandWriter.writeFileCommand", () => {
 describe("CommandWriter.write", () => {
     test("Should call the internal write function with correct data", async () => {
         const commands: ICommandSet = {
+            template: null,
             writeFiles: [{
                 content: "content",
                 fullPath: "/rusith/app/App.tsx",

@@ -1,5 +1,5 @@
 import ICommand from "../cli/models/ICommand";
-import {ITemplateFile} from "../templateDiscovery";
+import {ITemplateFile} from "../templateDiscovery/models/ITemplateFile";
 
 export  interface ITemplate {
   path: string;
