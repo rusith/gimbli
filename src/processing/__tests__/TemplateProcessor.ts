@@ -19,6 +19,7 @@ describe("TemplateProcessor.processConfig", () => {
     test("Should identify $path", () => {
         (fileUtils as any).setMockFn(fileUtils.getCurrentDirectory, () => path.join("rusith", "app"));
         const def: ITemplateDefinition = {
+            args: [],
             files: null,
             template: {
                 command: null,
@@ -35,6 +36,7 @@ describe("TemplateProcessor.processConfig", () => {
     test("Should identify $name", () => {
         (fileUtils as any).setMockFn(fileUtils.getCurrentDirectory, () => path.join("rusith", "app"));
         const def: ITemplateDefinition = {
+            args: [],
             files: null,
             template: {
                 command: null,
@@ -51,6 +53,7 @@ describe("TemplateProcessor.processConfig", () => {
     test("Path separator should be identified in all platforms", () => {
         (fileUtils as any).setMockFn(fileUtils.getCurrentDirectory, () => path.join("rusith", "app"));
         const def: ITemplateDefinition = {
+            args: [],
             files: null,
             template: {
                 command: null,
@@ -62,6 +65,26 @@ describe("TemplateProcessor.processConfig", () => {
         };
         const result = processConfig("$path/someFolder/$name.tsx", def.template);
         expect(result.fullPath).toBe(path.join("rusith", "app", "component", "someFolder", "App.tsx"));
+    });
+
+    test("A variable can be injected to config string", () => {
+        (fileUtils as any).setMockFn(fileUtils.getCurrentDirectory, () => path.join("rusith", "app"));
+        const def: ITemplateDefinition = {
+            args: [],
+            files: null,
+            template: {
+                command: null,
+                content: null,
+                file: null,
+                name: "component",
+                path: path.join("component", "App"),
+            },
+        };
+        const result = processConfig("$path/{{subFolder}}/$name.tsx", def.template, [{
+            name: "subFolder",
+            value: "folder1",
+        }]);
+        expect(result.fullPath).toBe(path.join("rusith", "app", "component", "folder1", "App.tsx"));
     });
 });
 
@@ -95,6 +118,7 @@ describe("TemplateProcessor.process", () => {
     test("Should return the command set", () => {
         (fileUtils as any).setMockFn(fileUtils.getCurrentDirectory, () => path.join("rusith", "app"));
         const def: ITemplateDefinition = {
+            args: [],
             files: [{
                 config: "$path/$name.txt",
                 content: "contentOne",
@@ -122,6 +146,7 @@ describe("TemplateProcessor.process", () => {
     test("Should return the template instance", () => {
 
         const def: ITemplateDefinition = {
+            args: [],
             files: [{
                 config: "$path/$name.txt",
                 content: "contentOne",

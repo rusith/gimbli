@@ -115,8 +115,6 @@ ${content}
             content: `
 @# args #@
 key
-component name
-Some other thing
 somethingElse
 @#@
             `,
@@ -133,6 +131,53 @@ somethingElse
         expect(result.args[1].name).toBe("somethingElse");
         expect(result.args[1].value).toBe(true);
     });
+
+
+    test("Default values for arguments should be false", () => {
+
+        const template: ITemplate = {
+            command: {
+                args: [
+                    {
+                        name: "key",
+                        value: "keyOne",
+                    },
+                    {
+                        name: "somethingElse",
+                        value: true,
+                    },
+                ],
+                path: null,
+                type: null,
+            },
+            content: `
+@# args #@
+key
+component name
+Some other thing
+somethingElse
+@#@
+            `,
+            file: null,
+            name: "test",
+            path: "",
+        };
+
+        const result = objectify(template);
+        expect(result.args.length).toBe(4);
+        expect(result.args[0].name).toBe("key");
+        expect(result.args[0].value).toBe("keyOne");
+
+        expect(result.args[1].name).toBe("component");
+        expect(result.args[1].value).toBe(false);
+
+        expect(result.args[2].name).toBe("Some");
+        expect(result.args[2].value).toBe(false);
+
+        expect(result.args[3].name).toBe("somethingElse");
+        expect(result.args[3].value).toBe(true);
+    });
+
 });
 
 describe("objectifier.findArgSection", () => {

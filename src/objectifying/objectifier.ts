@@ -24,13 +24,12 @@ export function objectify(template: ITemplate): ITemplateDefinition {
 
     const validArguments = args.arguments.map((a) => {
         const found = template.command.args.find((ar) => ar.name === a);
-        if (found)  {
-            return {
-                name: a,
-                value: found.value,
-            };
-        }
-    }).filter((i) =>  !!i);
+
+        return {
+            name: a,
+            value: found ? found.value : false,
+        };
+    });
 
     return {
         args: validArguments,

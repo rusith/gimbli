@@ -1,5 +1,7 @@
+import * as handlebars from "handlebars";
 import * as path from "path";
 import {ICommandSet, IFileDefinition, ITemplate, ITemplateDefinition} from "../models";
+import {IArgumentDefinition} from "../models/IArgumentDefinition";
 import {getCurrentDirectory} from "../utils/fileUtils";
 import {replace} from "../utils/regexUtils";
 import {IConfig} from "./models/IConfig";
@@ -19,7 +21,7 @@ export function processTemplate(def: ITemplateDefinition): ICommandSet {
     };
 }
 
-export function processConfig(config: string, def: ITemplate): IConfig {
+export function processConfig(config: string, def: ITemplate, ags: IArgumentDefinition[] = []): IConfig {
     if (!config) {
         throw new Error("Config should not be empty");
     }
@@ -36,13 +38,20 @@ export function processConfig(config: string, def: ITemplate): IConfig {
     let p = replace(config, "$path", path.join(currentLocation, pathOfPath));
     p = replace(p, "$name", name);
     p = replace(p, "/", substitute);
-    p = replace(p, substitute, path.sep);
+
+    const template = handlebars.compile(p);
+    const data = ags.reduce((obj, current) => {
+        obj[current.name] = current.value;
+        return obj;
+    }, {});
+
+    p = replace(template(data), substitute, path.sep);
 
     return {
         fullPath: p,
     };
 }
 
-export function processContent(file: IFileDefinition): string {
+export function processContent(file: IFileDefinition, args: IArgumentDefinition[] = []): string {
     return file.content;
 }
