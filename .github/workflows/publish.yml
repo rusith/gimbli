@@ -24,4 +24,4 @@ jobs:
           node-version: ${{ matrix.node }}
       - name: Publish
         run: |
-        npm publish --tag ${{ steps.tagName.outputs.tag }}
+          npm publish --tag ${{ steps.tagName.outputs.tag }}
