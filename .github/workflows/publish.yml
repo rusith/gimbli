@@ -1,0 +1,26 @@
+name: Publish
+on:
+  push:
+    branches:
+      - release
+    tags: *
+jobs:
+  publish:
+    env:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+    name: Publish the Package to NPM
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [10]
+    steps:
+      - uses: actions/checkout@v1
+      - uses: olegtarasov/get-tag@v1
+        id: tagName
+      - name: Setup Node JS
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Publish
+        run: |
+        npm publish --tag ${{ steps.tagName.outputs.tag }}
