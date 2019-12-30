@@ -35,9 +35,7 @@ jobs:
       - name: Install Node Packages
         run: npm install
       - name: Run Tests With Jest
-        run: |
-          npm run testWithCoverage
-          codecov --token=${{ secrets.CODECOV_TOKEN }}
+        run: npm run testWithCoverage
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
         with:

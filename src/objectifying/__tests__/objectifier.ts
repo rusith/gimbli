@@ -1,6 +1,5 @@
-import {Objectifier} from "..";
 import {ITemplate} from "../../models";
-import {RegexUtils} from "../../utils/concrete/RegexUtils";
+import {findFileSections, objectify} from "../objectifier";
 
 describe("Objectifier.findFileSections", () => {
     test("Should identify correct sections", () => {
@@ -11,8 +10,7 @@ describe("Objectifier.findFileSections", () => {
 ${content}
 @#@
         k`;
-            const objectifier = new Objectifier(new RegexUtils());
-            const result = objectifier.findFileSections(text);
+            const result = findFileSections(text);
             expect(result.length).toBe(1);
             expect(result[0].config).toBe(config);
             expect(result[0].content).toBe(`\n${content}\n`);
@@ -33,8 +31,7 @@ contentTwo
 @#@
         k`;
 
-        const objectifier = new Objectifier(new RegexUtils());
-        const result = objectifier.findFileSections(text);
+        const result = findFileSections(text);
         expect(result.length).toBe(2);
         expect(result[0].config).toBe("configOne");
         expect(result[0].content).toBe(`\ncontentOne\n`);
@@ -53,7 +50,6 @@ describe("Objectifier.objectify", () => {
 ${content}
 @#@
         k`;
-            const objectifier = new Objectifier(new RegexUtils());
             const template: ITemplate = {
                 command: null,
                 content: text,
@@ -61,7 +57,7 @@ ${content}
                 name: "test",
                 path: "",
             };
-            const result = objectifier.objectify(template);
+            const result = objectify(template);
             expect(result.files.length).toBe(1);
             expect(result.files[0].config).toBe(config);
             expect(result.files[0].content).toBe(`\n${content}\n`);

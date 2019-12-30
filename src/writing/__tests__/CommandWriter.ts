@@ -1,8 +1,9 @@
-import {CommandWriter, ICommandWriter} from "..";
 import {ICommandSet, IWriteFileCommand} from "../../models";
-import {IFileUtils} from "../../utils";
+import * as fileUtils from "../../utils/fileUtils";
+import {writeCommands, writeFileCommand} from "../commandWriting";
+jest.mock("../../utils/fileUtils");
 
-describe("CommandWriter.writeFile", () => {
+describe("CommandWriter.writeFileCommand", () => {
     test("Should call the internal write function with correct data", async () => {
         const commands: ICommandSet = {
             writeFiles: [{
@@ -16,14 +17,11 @@ describe("CommandWriter.writeFile", () => {
 
         const testFile = async (command: IWriteFileCommand) => {
             let ok = false;
-            const fileU: IFileUtils = {
-                async writeFile(path: string, content: string): Promise<void> {
-                    ok = path === command.fullPath && content === command.content;
-                },
-            };
+            (fileUtils as any).setMockFn(fileUtils.writeFile, async (path: string, content: string) => {
+                ok = path === command.fullPath && content === command.content;
+            });
 
-            const w = new CommandWriter(fileU);
-            await w.writeFile(command);
+            await writeFileCommand(command);
 
             expect(ok).toBeTruthy();
         };
@@ -47,13 +45,10 @@ describe("CommandWriter.write", () => {
 
         const calls = [];
 
-        const fileU: IFileUtils = {
-            async writeFile(path: string, content: string): Promise<void> {
-                calls.push([path, content]);
-            },
-        };
-        const w: ICommandWriter = new CommandWriter(fileU);
-        await w.write(commands);
+        (fileUtils as any).setMockFn(fileUtils.writeFile, async (path: string, content: string) => {
+            calls.push([path, content]);
+        });
+        await writeCommands(commands);
 
         expect(calls[0][0]).toBe(commands.writeFiles[0].fullPath);
         expect(calls[0][1]).toBe(commands.writeFiles[0].content);

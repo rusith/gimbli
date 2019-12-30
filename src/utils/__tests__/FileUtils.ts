@@ -1,50 +1,49 @@
 import * as path from "path";
-import {FileUtils, IFileUtils} from "..";
+import {
+    getCurrentDirectory,
+    getDirectoriesInsideDirectory, getFileContent,
+    getFilesOfDirectory,
+    nextDirectory,
+    writeFile,
+} from "../fileUtils";
 
 jest.mock("fs");
 
 describe("FileUtils.currentDirectory", () => {
     test("Should return the current directory", () => {
-        const utils: IFileUtils = new FileUtils();
-        expect(utils.getCurrentDirectory()).toBe(process.cwd());
+        expect(getCurrentDirectory()).toBe(process.cwd());
     });
 });
 
 describe("FileUtils.nextDirectory", () => {
     test("Should return next folder if current is null", () => {
-        const utils: IFileUtils = new FileUtils();
-        expect(utils.nextDirectory(null, "b")).toBe(path.join("b"));
+        expect(nextDirectory(null, "b")).toBe(path.join("b"));
     });
 
     test("Should return current folder if next is null", () => {
-        const utils: IFileUtils = new FileUtils();
-        expect(utils.nextDirectory("a", null)).toBe(path.join("a"));
+        expect(nextDirectory("a", null)).toBe(path.join("a"));
     });
 
     test("Should return next folder if current is empty", () => {
-        const utils: IFileUtils = new FileUtils();
-        expect(utils.nextDirectory("", "b")).toBe(path.join("b"));
+        expect(nextDirectory("", "b")).toBe(path.join("b"));
     });
 
     test("Should return current folder if next is empty", () => {
-        const utils: IFileUtils = new FileUtils();
-        expect(utils.nextDirectory("a", "")).toBe(path.join("a"));
+        expect(nextDirectory("a", "")).toBe(path.join("a"));
     });
 
     test("Should return current the full path correctly", () => {
-        const utils: IFileUtils = new FileUtils();
-        expect(utils.nextDirectory("a", "b")).toBe(path.join(path.join("a", "b")));
-        expect(utils.nextDirectory("/user/abs-cks/test/", "next--folder"))
+        expect(nextDirectory("a", "b")).toBe(path.join(path.join("a", "b")));
+        expect(nextDirectory("/user/abs-cks/test/", "next--folder"))
             .toBe(path.join("/user/abs-cks/test/", "next--folder"));
     });
 });
 
 describe("FileUtils.writeFile", () => {
     test("Should fail if file name is empty", async () => {
-        const u: IFileUtils = new FileUtils();
         let err: Error = null;
         try {
-            await u.writeFile("", "");
+            await writeFile("", "");
         } catch (e) {
             err = e;
         }
@@ -54,22 +53,18 @@ describe("FileUtils.writeFile", () => {
 
 describe("File System Functions", () => {
     test("getDirectoriesInsideDirectory", async () => {
-        const u: IFileUtils = new FileUtils();
-        await u.getDirectoriesInsideDirectory("");
+        await getDirectoriesInsideDirectory("");
     });
 
     test("getFilesOfDirectory", async () => {
-        const u: IFileUtils = new FileUtils();
-        await u.getFilesOfDirectory("");
+        await getFilesOfDirectory("");
     });
 
     test("getFileContent", async () => {
-        const u: IFileUtils = new FileUtils();
-        expect(await u.getFileContent("/somefile.txt")).toBe("data");
+        expect(await getFileContent("/somefile.txt")).toBe("data");
     });
 
     test("writeFile", async () => {
-        const u: IFileUtils = new FileUtils();
-        await u.writeFile("/someFile.txt", "something");
+        await writeFile("/someFile.txt", "something");
     });
 });

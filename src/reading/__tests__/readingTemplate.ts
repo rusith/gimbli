@@ -1,12 +1,14 @@
-import {ITemplateReader} from "..";
-import {TemplateReader} from "..";
-import {IFileUtils} from "../../utils";
+import * as fileUtils from "../../utils/fileUtils";
+import {readTemplate} from "../readingTemplate";
+
+jest.mock("../../utils/fileUtils");
 
 describe("TemplateReader.read", () => {
     test("Template reader should fail if the template is empty or null", async () => {
-        async function testIt(fileUtils: IFileUtils) {
-            const reader: ITemplateReader = new TemplateReader(fileUtils);
-            const template = reader.read({
+        async function testIt(getF: any) {
+            (fileUtils as any).setMockFn(fileUtils.getFileContent, getF);
+            // noinspection ES6MissingAwait
+            const template = readTemplate({
                 command: null,
                 file: {
                     fullPath: "",
@@ -26,20 +28,8 @@ describe("TemplateReader.read", () => {
             expect(err!.message).toBe("Template should not be empty");
         }
 
-        const emptyFileUtils: IFileUtils = {
-            getFileContent(): Promise<string> {
-                return Promise.resolve("");
-            },
-        };
-
-        await testIt(emptyFileUtils);
-
-        const nullFileUtils: IFileUtils = {
-            getFileContent(): Promise<string> {
-                return Promise.resolve(null);
-            },
-        };
-        await testIt(nullFileUtils); // Empty
+        await testIt(async () => "");
+        await testIt(async () => null);
     });
 
     test("Template reader should read the content of the file", async () => {
@@ -51,14 +41,9 @@ dsafd
 
 djakjfd
 `;
-        const fileUtils: IFileUtils = {
-            getFileContent(): Promise<string> {
-                return Promise.resolve(content);
-            },
-        };
 
-        const reader: ITemplateReader = new TemplateReader(fileUtils);
-        const template = await reader.read({
+        (fileUtils as any).setMockFn(fileUtils.getFileContent, async () => content);
+        const template = await readTemplate({
             command: null,
             file:  {
                 fullPath: "",

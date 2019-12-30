@@ -1,11 +1,10 @@
-import {RegexUtils} from "../concrete/RegexUtils";
+import {matchMultiple, replace} from "../regexUtils";
 
 describe("RegexUtils.matchMultiple", () => {
     test("Should match multiple matches - content should be correct", () => {
-        const utils = new RegexUtils();
         const text = " ab  abc abcdef";
         const regex = /ab\w*/;
-        const matches = utils.matchMultiple(regex, text);
+        const matches = matchMultiple(regex, text);
         expect(matches.length).toBe(3);
         matches.forEach((m, i) => {
             if (i === 0) {
@@ -19,10 +18,9 @@ describe("RegexUtils.matchMultiple", () => {
     });
 
     test("Should match multiple matches - ends should be correct", () => {
-        const utils = new RegexUtils();
         const text = " ab  ab ab";
         const regex = /ab/;
-        const matches = utils.matchMultiple(regex, text);
+        const matches = matchMultiple(regex, text);
         expect(matches.length).toBe(3);
         matches.forEach((m, i) => {
             if (i === 0) {
@@ -36,10 +34,9 @@ describe("RegexUtils.matchMultiple", () => {
     });
 
     test("Should match multiple matches - starts should be correct", () => {
-        const utils = new RegexUtils();
         const text = " ab  ab ab";
         const regex = /ab/;
-        const matches = utils.matchMultiple(regex, text);
+        const matches = matchMultiple(regex, text);
         expect(matches.length).toBe(3);
         matches.forEach((m, i) => {
             if (i === 0) {
@@ -56,8 +53,7 @@ describe("RegexUtils.matchMultiple", () => {
 describe("RegexUtils.replace", () => {
     test("Should replace all occurrences", () => {
         const str = "Lorem ipsumbla dolor sit ametbla, consectetur adipiscingbla elit. Nunc non.";
-        const regexUtils = new RegexUtils();
-        const result = regexUtils.replace(str, "bla", "");
+        const result = replace(str, "bla", "");
         expect(result).toBe("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc non.");
     });
 });
