@@ -1,3 +1,4 @@
+// tslint:disable-next-line:no-var-requires
 const fs = require("fs");
 import * as path from "path";
 import {IFileUtils} from "..";

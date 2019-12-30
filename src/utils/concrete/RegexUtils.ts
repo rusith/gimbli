@@ -20,4 +20,8 @@ export class RegexUtils implements IRegexUtils {
             };
         });
     }
+
+    public replace(text: string, target: string, substitute: string): string {
+        return text.split(target).join(substitute);
+    }
 }

@@ -7,6 +7,7 @@ describe("TemplateReader.read", () => {
         async function testIt(fileUtils: IFileUtils) {
             const reader: ITemplateReader = new TemplateReader(fileUtils);
             const template = reader.read({
+                command: null,
                 file: {
                     fullPath: "",
                     name: "test",
@@ -58,6 +59,7 @@ djakjfd
 
         const reader: ITemplateReader = new TemplateReader(fileUtils);
         const template = await reader.read({
+            command: null,
             file:  {
                 fullPath: "",
                 name: "test",

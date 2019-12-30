@@ -52,12 +52,24 @@ describe("FileUtils.writeFile", () => {
     });
 });
 
-
-
 describe("File System Functions", () => {
     test("getDirectoriesInsideDirectory", async () => {
         const u: IFileUtils = new FileUtils();
-        await await u.getDirectoriesInsideDirectory("")
+        await u.getDirectoriesInsideDirectory("");
+    });
+
+    test("getFilesOfDirectory", async () => {
+        const u: IFileUtils = new FileUtils();
+        await u.getFilesOfDirectory("");
+    });
+
+    test("getFileContent", async () => {
+        const u: IFileUtils = new FileUtils();
+        expect(await u.getFileContent("/somefile.txt")).toBe("data");
+    });
+
+    test("writeFile", async () => {
+        const u: IFileUtils = new FileUtils();
+        await u.writeFile("/someFile.txt", "something");
     });
 });
-

@@ -57,7 +57,6 @@ describe("TemplateFinder.findTemplate", () => {
 
     test("Should return the command", async () => {
 
-
         const utils: ITemplateDiscoveryUtils = {
             async getTemplateFileOfFolder(): Promise<ITemplateFile[]> {
                 return [{

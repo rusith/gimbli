@@ -20,7 +20,7 @@ import {CommandWriter} from "./writing";
     const templateFinder = new TemplateFinder(templateDiscoveryUtils, fileUtils);
     const templateReader = new TemplateReader(fileUtils);
     const objectifier = new Objectifier(regexUtils);
-    const processor = new TemplateProcessor(fileUtils);
+    const processor = new TemplateProcessor(fileUtils, regexUtils);
     const writer = new CommandWriter(fileUtils);
     const gimbli = new Gimbli(commandLineInputValidator, reader,
         cliUtils, templateFinder, templateReader, objectifier, processor, writer);

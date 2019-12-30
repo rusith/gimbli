@@ -52,3 +52,12 @@ describe("RegexUtils.matchMultiple", () => {
         });
     });
 });
+
+describe("RegexUtils.replace", () => {
+    test("Should replace all occurrences", () => {
+        const str = "Lorem ipsumbla dolor sit ametbla, consectetur adipiscingbla elit. Nunc non.";
+        const regexUtils = new RegexUtils();
+        const result = regexUtils.replace(str, "bla", "");
+        expect(result).toBe("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc non.");
+    });
+});

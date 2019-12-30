@@ -55,6 +55,7 @@ ${content}
         k`;
             const objectifier = new Objectifier(new RegexUtils());
             const template: ITemplate = {
+                command: null,
                 content: text,
                 file: null,
                 name: "test",

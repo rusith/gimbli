@@ -1,10 +1,11 @@
 import * as path from "path";
 import {IConfig, ITemplateProcessor} from "..";
 import {ICommandSet, IFileDefinition, ITemplate, ITemplateDefinition} from "../../models";
-import {IFileUtils} from "../../utils";
+import {IFileUtils, IRegexUtils} from "../../utils";
 
 export class TemplateProcessor implements ITemplateProcessor {
-    constructor(private fileUtils: IFileUtils) {}
+    constructor(private fileUtils: IFileUtils, private regex: IRegexUtils) {
+    }
 
     public process(def: ITemplateDefinition): ICommandSet {
         const writeFiles = def.files
@@ -32,8 +33,16 @@ export class TemplateProcessor implements ITemplateProcessor {
         const pathOfPath = path.dirname(def.path);
         const currentLocation = this.fileUtils.getCurrentDirectory();
 
-        const p = config.replace("$path", path.join(currentLocation, pathOfPath))
-            .replace("$name", name);
+        const substitute = "___PATH_SEPARATOR";
+
+        let p = this.regex.replace(config, "$path", path.join(currentLocation, pathOfPath));
+        p = this.regex.replace(p, "$name", name);
+        p = this.regex.replace(p, "/", substitute);
+        p = this.regex.replace(p, substitute, path.sep);
+
+        // const p = config.replace("$path", path.join(currentLocation, pathOfPath))
+        //     .replace("$name", name)
+        //     .replace("/", substitute).replace(substitute, path.sep);
 
         return {
             fullPath: p,
