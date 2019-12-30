@@ -4,7 +4,7 @@ on:
     branches:
       - release
     tags:
-      - *
+      - '*'
 jobs:
   publish:
     env:
