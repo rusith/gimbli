@@ -28,7 +28,7 @@ describe("TemplateProcessor.processConfig", () => {
                 path: path.join("/component", "App"),
             },
         };
-        const result = processConfig("$path" , def.template);
+        const result = processConfig("$path", def.template);
         expect(result.fullPath).toBe(path.join("rusith", "app", "component"));
     });
 
@@ -44,7 +44,7 @@ describe("TemplateProcessor.processConfig", () => {
                 path: path.join("component", "App"),
             },
         };
-        const result = processConfig("$path/$name.tsx" , def.template);
+        const result = processConfig("$path/$name.tsx", def.template);
         expect(result.fullPath).toBe(path.join("rusith", "app", "component", "App.tsx"));
     });
 
@@ -60,7 +60,7 @@ describe("TemplateProcessor.processConfig", () => {
                 path: path.join("component", "App"),
             },
         };
-        const result = processConfig("$path/someFolder/$name.tsx" , def.template);
+        const result = processConfig("$path/someFolder/$name.tsx", def.template);
         expect(result.fullPath).toBe(path.join("rusith", "app", "component", "someFolder", "App.tsx"));
     });
 });
@@ -117,5 +117,28 @@ describe("TemplateProcessor.process", () => {
 
         expect(result.writeFiles[1].content).toBe("contentTwo");
         expect(result.writeFiles[1].fullPath).toBe(path.join("rusith", "app", "component", "App.tsx"));
+    });
+
+    test("Should return the template instance", () => {
+
+        const def: ITemplateDefinition = {
+            files: [{
+                config: "$path/$name.txt",
+                content: "contentOne",
+            }, {
+                config: "$path/$name.tsx",
+                content: "contentTwo",
+            }],
+            template: {
+                command: null,
+                content: null,
+                file: null,
+                name: "component",
+                path: path.join("component", "App"),
+            },
+        };
+
+        const result = processTemplate(def);
+        expect(result.template).toBe(def.template);
     });
 });

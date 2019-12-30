@@ -14,6 +14,7 @@ export function processTemplate(def: ITemplateDefinition): ICommandSet {
         });
 
     return {
+        template: def.template,
         writeFiles,
     };
 }
