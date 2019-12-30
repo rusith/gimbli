@@ -1,3 +1,4 @@
+import ICommand from "../cli/models/ICommand";
 import {ITemplateFile} from "../templateDiscovery";
 
 export  interface ITemplate {
@@ -5,4 +6,5 @@ export  interface ITemplate {
   name: string;
   file: ITemplateFile;
   content?: string;
+  command: ICommand;
 }

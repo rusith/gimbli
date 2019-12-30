@@ -16,6 +16,15 @@ describe("CommandReader.read", () => {
         const command = commandReader.read(["component", "component/App"]);
         expect(command.path).toBe("component/App");
     });
+
+    test("Should return the argument set", () => {
+        const reader = new CommandReader();
+        const result = reader.read(["component", "App", "-componentName",
+            "AppComponent"]);
+        expect(result.args.length).toBe(1);
+        expect(result.args[0].name).toBe("componentName");
+        expect(result.args[0].value).toBe("AppComponent");
+    });
 });
 
 describe("CommandReader.readExtraArguments", () => {

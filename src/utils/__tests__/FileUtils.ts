@@ -1,6 +1,8 @@
 import * as path from "path";
 import {FileUtils, IFileUtils} from "..";
 
+jest.mock("fs");
+
 describe("FileUtils.currentDirectory", () => {
     test("Should return the current directory", () => {
         const utils: IFileUtils = new FileUtils();
@@ -49,3 +51,13 @@ describe("FileUtils.writeFile", () => {
         expect(err!.message).toBe("Cannot write to file without a specified path");
     });
 });
+
+
+
+describe("File System Functions", () => {
+    test("getDirectoriesInsideDirectory", async () => {
+        const u: IFileUtils = new FileUtils();
+        await await u.getDirectoriesInsideDirectory("")
+    });
+});
+

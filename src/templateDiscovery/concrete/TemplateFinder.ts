@@ -19,6 +19,7 @@ export class TemplateFinder implements ITemplateFinder {
 
             if (templateFiles.length) {
                 return {
+                    command,
                     file: templateFiles[0],
                     name: templateFiles[0].name,
                     path: command.path,

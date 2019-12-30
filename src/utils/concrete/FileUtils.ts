@@ -1,4 +1,4 @@
-import * as fs from "fs";
+const fs = require("fs");
 import * as path from "path";
 import {IFileUtils} from "..";
 
@@ -52,7 +52,7 @@ export class FileUtils implements IFileUtils {
         });
     }
 
-    private readFiles(dir: string, filter: (dir: fs.Dirent) => boolean) {
+    private readFiles(dir: string, filter: (dir: any) => boolean) {
         return new Promise<string[]>((resolve, reject) => {
             fs.readdir(dir, { withFileTypes: true}, (err, files) => {
                 if (err) {
