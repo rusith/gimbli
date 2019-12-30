@@ -1,5 +1,12 @@
-@# file($path/$name.txt)@#
-The Txt File
+@#args#@
+className
+abstract
+@#@
+
+@# file($path/section/actions.ts) #@
+export {{#if abstract}}abstract{{/if}} class {{className}} {
+    // TODO Fill up
+}
 @#@
 
 

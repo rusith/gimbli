@@ -52,6 +52,21 @@ contentOne
         const result = findFileSections(text);
         expect(result.length).toBe(0);
     });
+
+    test("Should handle arbitrary spaces", () => {
+        const text = `
+@# file   (  configOne  )  #@
+contentOne
+@#@
+
+        k`;
+
+        const result = findFileSections(text);
+        expect(result.length).toBe(1);
+        expect(result[0].config).toBe("  configOne  ");
+        expect(result[0].content).toBe("\ncontentOne\n");
+        
+    });
 });
 
 describe("objectifier.objectify", () => {
@@ -132,7 +147,6 @@ somethingElse
         expect(result.args[1].value).toBe(true);
     });
 
-
     test("Default values for arguments should be false", () => {
 
         const template: ITemplate = {
@@ -178,6 +192,86 @@ somethingElse
         expect(result.args[3].value).toBe(true);
     });
 
+    test("Should be able to handle arguments and files", () => {
+
+        const template: ITemplate = {
+            command: {
+                args: [
+                    {
+                        name: "className",
+                        value: "TestClass",
+                    },
+                ],
+                path: "components/App",
+                type: null,
+            },
+            content: `
+@# args #@
+className
+@#@
+
+@# file($path/$name.tsx) #@
+export default class {{className}} {
+
+}
+@#@
+
+@# file($path/$name.module.css) #@
+.{{className}} {
+    color: white;
+}
+@#@
+
+            `,
+            file: null,
+            name: "test",
+            path: "",
+        };
+
+        const result = objectify(template);
+        expect(result.args.length).toBe(1);
+        expect(result.args[0].name).toBe("className");
+        expect(result.args[0].value).toBe("TestClass");
+
+        expect(result.files[0].config).toBe("$path/$name.tsx");
+        expect(result.files[0].content).toBe("\nexport default class {{className}} {\n\n}\n");
+
+        expect(result.files[1].config).toBe("$path/$name.module.css");
+        expect(result.files[1].content).toBe("\n.{{className}} {\n    color: white;\n}\n");
+    });
+
+    test("Should be able to handle arguments and files when file starts at index 0", () => {
+        const template: ITemplate = {
+            command: {
+                args: [
+                    {
+                        name: "className",
+                        value: "TestClass",
+                    },
+                ],
+                path: "components/App",
+                type: null,
+            },
+            content: `@# args #@
+className
+@#@
+@# file(test.txt) #@
+content
+@#@
+            `,
+            file: null,
+            name: "test",
+            path: "",
+        };
+
+        const result = objectify(template);
+        expect(result.args.length).toBe(1);
+        expect(result.args[0].name).toBe("className");
+        expect(result.args[0].value).toBe("TestClass");
+
+        expect(result.files[0].config).toBe("test.txt");
+        expect(result.files[0].content).toBe("\ncontent\n");
+    });
 });
 
 describe("objectifier.findArgSection", () => {
@@ -234,5 +328,16 @@ somethingElse
         expect(result.arguments[1]).toBe("component");
         expect(result.arguments[2]).toBe("Some");
         expect(result.arguments[3]).toBe("somethingElse");
+    });
+
+    test("Should return start and end of the section", () => {
+        const content = `
+@# args #@
+key
+@#@
+`;
+        const result = findArgSection(content);
+        expect(result.start).toBe(1);
+        expect(result.end).toBe(19);
     });
 });

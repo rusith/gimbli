@@ -10,8 +10,8 @@ export function processTemplate(def: ITemplateDefinition): ICommandSet {
     const writeFiles = def.files
         .map((file) => {
             return {
-                content: processContent(file),
-                fullPath: processConfig(file.config, def.template).fullPath,
+                content: processContent(file, def.args),
+                fullPath: processConfig(file.config, def.template, def.args).fullPath,
             };
         });
 
@@ -53,5 +53,13 @@ export function processConfig(config: string, def: ITemplate, ags: IArgumentDefi
 }
 
 export function processContent(file: IFileDefinition, args: IArgumentDefinition[] = []): string {
-    return file.content;
+    const template = handlebars.compile(file.content);
+    return template(argumentsToData(args));
+}
+
+function argumentsToData(args: IArgumentDefinition[]) {
+    return args.reduce((obj, current) => {
+        obj[current.name] = current.value;
+        return obj;
+    }, {});
 }

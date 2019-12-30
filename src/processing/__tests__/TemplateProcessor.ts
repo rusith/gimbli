@@ -112,6 +112,17 @@ fsh`;
         const result = processContent(file);
         expect(result).toBe(content);
     });
+
+    test("Should be able to use arguments inside the content", () => {
+        const result = processContent({
+            config: "",
+            content: "export class {{className}} {}",
+        }, [{
+            name: "className",
+            value: "Dog",
+        }]);
+        expect(result).toBe("export class Dog {}");
+    });
 });
 
 describe("TemplateProcessor.process", () => {
