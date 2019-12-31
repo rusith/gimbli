@@ -3,6 +3,8 @@ import {matchMultiple} from "../utils/regexUtils";
 import {IArgumentSection} from "./models/IArgumentSection";
 import {IFileSection} from "./models/IFileSection";
 
+const EOL = /\r\n|\r|\n/;
+
 export function findFileSections(fileContent: string): IFileSection[] {
     const startRegex = /@#\s*file\s*\((.*)\)\s*#@/;
     const endRegex = /@#@/;
@@ -11,9 +13,11 @@ export function findFileSections(fileContent: string): IFileSection[] {
 
     return startMatches.map((match, index) => {
         const end = endMatches[index];
+        const sub = fileContent.substring(match.end, end.start);
+        const eolEx = EOL.exec(sub);
         return {
             config: match.groups[0],
-            content: fileContent.substring(match.end, end.start),
+            content: (eolEx && eolEx.index === 0) ? sub.replace(EOL, "") : sub,
         };
     });
 }
@@ -58,7 +62,7 @@ export function findArgSection(fileContent: string): IArgumentSection {
     if (startMatch && endMatch) {
         const definitionContent = fileContent.substring(startMatch.end, endMatch.start).trim();
         if (definitionContent) {
-            const lines = definitionContent.split(/\r\n|\r|\n/).map((l) => l.trim());
+            const lines = definitionContent.split(EOL).map((l) => l.trim());
             ars = lines.map((line) => {
                 const match = /^\s*([\w\d]+)\s*/.exec(line);
                 if (match) {

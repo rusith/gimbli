@@ -14,7 +14,7 @@ ${content}
             const result = findFileSections(text);
             expect(result.length).toBe(1);
             expect(result[0].config).toBe(config);
-            expect(result[0].content).toBe(`\n${content}\n`);
+            expect(result[0].content).toBe(`${content}\n`);
         }
 
         testContent("content one", "config one");
@@ -35,10 +35,10 @@ contentTwo
         const result = findFileSections(text);
         expect(result.length).toBe(2);
         expect(result[0].config).toBe("configOne");
-        expect(result[0].content).toBe(`\ncontentOne\n`);
+        expect(result[0].content).toBe(`contentOne\n`);
 
         expect(result[1].config).toBe("configTwo");
-        expect(result[1].content).toBe(`\ncontentTwo\n`);
+        expect(result[1].content).toBe(`contentTwo\n`);
     });
     
     test("Should return an empty list is there are no sections", () => {
@@ -64,8 +64,58 @@ contentOne
         const result = findFileSections(text);
         expect(result.length).toBe(1);
         expect(result[0].config).toBe("  configOne  ");
-        expect(result[0].content).toBe("\ncontentOne\n");
+        expect(result[0].content).toBe("contentOne\n");
         
+    });
+
+    test("Starting EOL should be removed from the content", () => {
+        const text = `
+@# file   (  configOne  )  #@
+contentOne
+@#@
+
+        k`;
+
+        const result = findFileSections(text);
+        expect(result[0].content).toBe("contentOne\n");
+    });
+
+    test("Starting EOL should be removed from the content - when content is multiline", () => {
+        const text = `
+@# file   (  configOne  )  #@
+abc
+def
+contentOne
+@#@
+
+        k`;
+
+        const result = findFileSections(text);
+        expect(result[0].content).toBe("abc\ndef\ncontentOne\n");
+    });
+
+    test("Deliberate spaces in the start should be perceived", () => {
+        const text = `
+@# file   (  configOne  )  #@
+  abc
+def
+contentOne
+@#@
+
+        k`;
+
+        const result = findFileSections(text);
+        expect(result[0].content).toBe("  abc\ndef\ncontentOne\n");
+    });
+
+    test("Should not fail if content doesn't have new lines", () => {
+        const text = `
+@# file   (  configOne  )  #@  contentOne  @#@
+
+        k`;
+
+        const result = findFileSections(text);
+        expect(result[0].content).toBe("  contentOne  ");
     });
 });
 
@@ -88,7 +138,7 @@ ${content}
             const result = objectify(template);
             expect(result.files.length).toBe(1);
             expect(result.files[0].config).toBe(config);
-            expect(result.files[0].content).toBe(`\n${content}\n`);
+            expect(result.files[0].content).toBe(`${content}\n`);
             expect(result.template).toBe(template);
         }
 
@@ -234,10 +284,10 @@ export default class {{className}} {
         expect(result.args[0].value).toBe("TestClass");
 
         expect(result.files[0].config).toBe("$path/$name.tsx");
-        expect(result.files[0].content).toBe("\nexport default class {{className}} {\n\n}\n");
+        expect(result.files[0].content).toBe("export default class {{className}} {\n\n}\n");
 
         expect(result.files[1].config).toBe("$path/$name.module.css");
-        expect(result.files[1].content).toBe("\n.{{className}} {\n    color: white;\n}\n");
+        expect(result.files[1].content).toBe(".{{className}} {\n    color: white;\n}\n");
     });
 
     test("Should be able to handle arguments and files when file starts at index 0", () => {
@@ -270,7 +320,7 @@ content
         expect(result.args[0].value).toBe("TestClass");
 
         expect(result.files[0].config).toBe("test.txt");
-        expect(result.files[0].content).toBe("\ncontent\n");
+        expect(result.files[0].content).toBe("content\n");
     });
 });
 
