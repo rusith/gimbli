@@ -1,7 +1,9 @@
 import * as path from "path";
 import {
-    getCurrentDirectory,
-    getDirectoriesInsideDirectory, getFileContent,
+    createDirectory,
+    exists,
+    getCurrentDirectory, getDirectoriesInsideDirectory,
+    getFileContent,
     getFilesOfDirectory,
     nextDirectory,
     writeFile,
@@ -66,5 +68,13 @@ describe("File System Functions", () => {
 
     test("writeFile", async () => {
         await writeFile("/someFile.txt", "something");
+    });
+
+    test("createDirectory", async () => {
+        await createDirectory("/a/b/c");
+    });
+
+    test("exists", async () => {
+        exists("/a/b/c");
     });
 });
