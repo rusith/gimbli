@@ -1,7 +1,7 @@
 import * as path from "path";
-import {IFileDefinition, ITemplateDefinition} from "../../models";
+import {ITemplateDefinition} from "../../models";
 import * as fileUtils from "../../utils/fileUtils";
-import {processConfig, processContent, processTemplate} from "../templateProcessing";
+import {processConfig} from "../templateProcessing";
 
 jest.mock("../../utils/fileUtils");
 
@@ -85,96 +85,5 @@ describe("TemplateProcessor.processConfig", () => {
             value: "folder1",
         }]);
         expect(result.fullPath).toBe(path.join("rusith", "app", "component", "folder1", "App.tsx"));
-    });
-});
-
-describe("TemplateProcessor.processContent", () => {
-    test("Should return static content", () => {
-        (fileUtils as any).setMockFn(fileUtils.getCurrentDirectory, () => path.join("rusith", "app"));
-        const file: IFileDefinition = {
-            config: "",
-            content: `Content`,
-        };
-
-        const result = processContent(file);
-        expect(result).toBe("Content");
-    });
-
-    test("Should return static content - multiline", () => {
-        (fileUtils as any).setMockFn(fileUtils.getCurrentDirectory, () => path.join("rusith", "app"));
-        const content = `Content
-fsh`;
-        const file: IFileDefinition = {
-            config: "",
-            content,
-        };
-
-        const result = processContent(file);
-        expect(result).toBe(content);
-    });
-
-    test("Should be able to use arguments inside the content", () => {
-        const result = processContent({
-            config: "",
-            content: "export class {{className}} {}",
-        }, [{
-            name: "className",
-            value: "Dog",
-        }]);
-        expect(result).toBe("export class Dog {}");
-    });
-});
-
-describe("TemplateProcessor.process", () => {
-    test("Should return the command set", () => {
-        (fileUtils as any).setMockFn(fileUtils.getCurrentDirectory, () => path.join("rusith", "app"));
-        const def: ITemplateDefinition = {
-            args: [],
-            files: [{
-                config: "$path/$name.txt",
-                content: "contentOne",
-            }, {
-                config: "$path/$name.tsx",
-                content: "contentTwo",
-            }],
-            template: {
-                command: null,
-                content: null,
-                file: null,
-                name: "component",
-                path: path.join("component", "App"),
-            },
-        };
-
-        const result = processTemplate(def);
-        expect(result.writeFiles[0].content).toBe("contentOne");
-        expect(result.writeFiles[0].fullPath).toBe(path.join("rusith", "app", "component", "App.txt"));
-
-        expect(result.writeFiles[1].content).toBe("contentTwo");
-        expect(result.writeFiles[1].fullPath).toBe(path.join("rusith", "app", "component", "App.tsx"));
-    });
-
-    test("Should return the template instance", () => {
-
-        const def: ITemplateDefinition = {
-            args: [],
-            files: [{
-                config: "$path/$name.txt",
-                content: "contentOne",
-            }, {
-                config: "$path/$name.tsx",
-                content: "contentTwo",
-            }],
-            template: {
-                command: null,
-                content: null,
-                file: null,
-                name: "component",
-                path: path.join("component", "App"),
-            },
-        };
-
-        const result = processTemplate(def);
-        expect(result.template).toBe(def.template);
     });
 });

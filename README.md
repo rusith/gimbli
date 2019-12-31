@@ -38,6 +38,7 @@ interface IProps {
 const Component: React.FC<IProps> = () => {
     return (
       <div className={styles.root}>
+        Content
       </div>
     );
 };
@@ -54,7 +55,7 @@ export default Component;
 
 
 @# file($path/index.ts) #@
-import $name form "./$name.tsx";
+import $name from "./$name.tsx";
 export default $name;
 @#@
 ```
