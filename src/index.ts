@@ -7,7 +7,7 @@ import {readTemplate} from "./reading/readingTemplate";
 import {findTemplate} from "./templateDiscovery/templateFinding";
 import {writeCommands} from "./writing/commandWriting";
 
-(async (args: string[]) => {
+export async function run(args: string[]) {
     const validated = validate(args);
     if (!validated.isValid) {
         // tslint:disable-next-line:no-console
@@ -22,4 +22,4 @@ import {writeCommands} from "./writing/commandWriting";
     const objects = objectify(redTemplate);
     const commands = processTemplate(objects);
     await writeCommands(commands);
-})(process.argv);
+}

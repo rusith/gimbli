@@ -2,11 +2,15 @@
   "name": "gimbli",
   "version": "1.0.3",
   "description": "A file generator that can generate multiple files from a single command with Handlebars support",
-  "main": "index.js",
+  "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "files": [
     "lib/**/*"
   ],
+  "preferGlobal": true,
+  "bin": {
+    "gimbli": "./bin/index.js"
+  },
   "scripts": {
     "test": "jest",
     "lint": "tslint -p tsconfig.json",
