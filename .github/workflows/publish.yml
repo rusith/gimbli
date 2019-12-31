@@ -3,8 +3,6 @@ on:
   push:
     branches:
       - release
-    tags:
-      - '*'
 env:
   NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 jobs:
@@ -16,12 +14,10 @@ jobs:
         node: [10]
     steps:
       - uses: actions/checkout@v1
-      - uses: olegtarasov/get-tag@v1
-        id: tagName
       - name: Setup Node JS
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node }}
       - name: Publish
         run: |
-          npm publish --tag ${{ steps.tagName.outputs.tag }}
+          npm publish
