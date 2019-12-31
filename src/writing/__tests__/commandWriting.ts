@@ -1,6 +1,8 @@
+import * as fsPath from "path";
 import {ICommandSet, IWriteFileCommand} from "../../models";
 import * as fileUtils from "../../utils/fileUtils";
 import {writeCommands, writeFileCommand} from "../commandWriting";
+
 jest.mock("../../utils/fileUtils");
 
 describe("CommandWriter.writeFileCommand", () => {
@@ -29,6 +31,27 @@ describe("CommandWriter.writeFileCommand", () => {
 
         await testFile(commands.writeFiles[0]);
         await testFile(commands.writeFiles[1]);
+    });
+
+    test("Should create the directory if not present", async () => {
+        const command =  {
+            content: "content",
+            fullPath: fsPath.join("rusith", "app", "App.tsx"),
+        };
+
+        let existsCalled = false;
+        (fileUtils as any).setMockFn(fileUtils.exists, (path) => {
+            existsCalled = (path === fsPath.join("rusith", "app"));
+        });
+
+        let mkdirCalled = false;
+        (fileUtils as any).setMockFn(fileUtils.createDirectory, (path) => {
+            mkdirCalled = (path === fsPath.join("rusith", "app"));
+        });
+
+        await writeFileCommand(command);
+        expect(existsCalled).toBeTruthy();
+        expect(mkdirCalled).toBeTruthy();
     });
 });
 

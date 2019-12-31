@@ -61,3 +61,19 @@ function readFiles(dir: string, filter: (dir: any) => boolean) {
         });
     });
 }
+
+export function createDirectory(dir: string): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+        fs.mkdir(dir, { recursive: true }, (err) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve();
+            }
+        });
+    });
+}
+
+export function exists(filePath: string): boolean {
+    return fs.existsSync(filePath);
+}

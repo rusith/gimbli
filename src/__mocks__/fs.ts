@@ -33,7 +33,16 @@ function writeFile(p, content, callback) {
     callback(null, content);
 }
 
+function mkdir(p, options, callback) {
+    callback(null, null);
+}
+
+function exists(pa) {
+    return false;
+}
+
 fs.readdir = readdir;
 fs.readFile = readFile;
 fs.writeFile = writeFile;
+fs.mkdir = mkdir;
 module.exports = fs;
