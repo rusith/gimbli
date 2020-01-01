@@ -10,6 +10,10 @@ export function logError(message: string) {
     global.console.log(`${colors.fgRed}%s${colors.reset}`, message);
 }
 
+export function logSuccess(message: string) {
+    global.console.log(`${colors.fgGreen}%s${colors.reset}`, message);
+}
+
 export const colors = {
     fgGreen: "\x1b[32m",
     fgRed: "\x1b[31m",

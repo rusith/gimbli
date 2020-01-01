@@ -1,4 +1,4 @@
-import {colors, logError, logInfo, logWarning} from "../logs";
+import {colors, logError, logInfo, logSuccess, logWarning} from "../logs";
 
 describe("logs.logInfo", () => {
     test("Should call console log with right parameters", () => {
@@ -23,5 +23,14 @@ describe("logs.logError", () => {
         const message = "Something went wrong";
         logError(message);
         expect(spy).toBeCalledWith(`${colors.fgRed}%s${colors.reset}`, message);
+    });
+});
+
+describe("logs.logSuccess", () => {
+    test("Should call console log with right parameters", () => {
+        const spy = jest.spyOn(global.console, "log");
+        const message = "Everything went fine";
+        logSuccess(message);
+        expect(spy).toBeCalledWith(`${colors.fgGreen}%s${colors.reset}`, message);
     });
 });
