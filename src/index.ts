@@ -12,11 +12,10 @@ export async function run(args: string[]) {
     logInfo("Doing something");
     const validated = validate(args);
     if (!validated.isValid) {
-        // tslint:disable-next-line:no-console
-        validated.errors.forEach((e) => console.error(e));
+        validated.errors.forEach((e) => global.console.error(e));
         return;
     }
-    
+
     logInfo("Doing something");
 
     args = getRelevantArguments(args);
@@ -29,5 +28,5 @@ export async function run(args: string[]) {
 }
 
 if (require.main === module) {
-    run(process.argv);
+    run(process.argv).catch(global.console.error);
 }
