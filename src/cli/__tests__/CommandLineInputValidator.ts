@@ -11,14 +11,14 @@ describe("CommandLineInputValidator.validate", () => {
         const args = ["exe", "path"]; // default stuff
         const result = validate(args);
         expect(result.errors).not.toBe(null);
-        expect(result.errors[0]).toBe("Not enough arguments provided. name and file path is required");
+        expect(result.errors[0]).toBe("Not enough arguments provided.command name and target path is required");
     });
 
     test("Message if no enough arguments", () => {
         const args = ["exe", "path", "name"]; // default stuff
         const result = validate(args);
         expect(result.errors).not.toBe(null);
-        expect(result.errors[0]).toBe("Not enough arguments provided. name and file path is required");
+        expect(result.errors[0]).toBe("Not enough arguments provided.command name and target path is required");
     });
 
     test("Should be valid if the arguments are sufficient", () => {
