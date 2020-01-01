@@ -26,7 +26,7 @@ describe("TemplateFinder.findTemplate", () => {
 
         (utils as any).setMockFn(utils.isTemplateFolderPresent, async () => true);
 
-        const file = await findTemplate({ type: "test", path: "App", args: []});
+        const file = await findTemplate({ type: "test", path: "App", args: [], specialArgs: []});
         expect(file.name).toBe("test");
         expect(file.path).toBe("App");
         expect(file.file.fullPath).toBe("templates/test.gimbli");
@@ -38,7 +38,7 @@ describe("TemplateFinder.findTemplate", () => {
 
         let err: Error = null;
         try {
-            await findTemplate({ type: "test", path: "App", args: []});
+            await findTemplate({ type: "test", path: "App", args: [], specialArgs: []});
         } catch (e) {
             err = e;
         }
@@ -57,7 +57,7 @@ describe("TemplateFinder.findTemplate", () => {
 
         (utils as any).setMockFn(utils.isTemplateFolderPresent, async () => true);
 
-        const command = { type: "test", path: "App", args: []};
+        const command = { type: "test", path: "App", args: [], specialArgs: []};
         const file = await findTemplate(command);
         expect(file.command).toBe(command);
     });

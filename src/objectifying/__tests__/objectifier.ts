@@ -175,6 +175,7 @@ ${content}
                     },
                 ],
                 path: null,
+                specialArgs: [],
                 type: null,
             },
             content: `
@@ -212,6 +213,7 @@ somethingElse
                     },
                 ],
                 path: null,
+                specialArgs: [],
                 type: null,
             },
             content: `
@@ -253,6 +255,7 @@ somethingElse
                     },
                 ],
                 path: "components/App",
+                specialArgs: [],
                 type: null,
             },
             content: `
@@ -300,6 +303,7 @@ export default class {{className}} {
                     },
                 ],
                 path: "components/App",
+                specialArgs: [],
                 type: null,
             },
             content: `@# args #@
