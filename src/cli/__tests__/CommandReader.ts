@@ -24,6 +24,17 @@ describe("CommandReader.read", () => {
         expect(result.args[0].name).toBe("componentName");
         expect(result.args[0].value).toBe("AppComponent");
     });
+
+    test("Arguments with double hyphen should be considered as special arguments", () => {
+        const result = readArguments(["component", "App", "-componentName",
+            "AppComponent", "--templateDir", "--someOtherArg", "argValue"]);
+        expect(result.specialArgs.length).toBe(2);
+        expect(result.specialArgs[0].name).toBe("templateDir");
+        expect(result.specialArgs[0].value).toBe(true);
+
+        expect(result.specialArgs[1].name).toBe("someOtherArg");
+        expect(result.specialArgs[1].value).toBe("argValue");
+    });
 });
 
 describe("CommandReader.readExtraArguments", () => {
@@ -78,4 +89,5 @@ describe("CommandReader.readExtraArguments", () => {
         expect(result[0].name).toBe("componentName");
         expect(result[0].value).toBe("AppComponent");
     });
+
 });

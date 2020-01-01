@@ -2,9 +2,15 @@ import ICommand from "./models/ICommand";
 import {ICommandArgument} from "./models/ICommandArgument";
 
 export function readArguments(args: string[]): ICommand {
+    const allArgs = this.readExtraArguments(args);
     return {
-        args: this.readExtraArguments(args),
+        args: allArgs.filter((a) => !a.name.startsWith("-")),
         path: args[1],
+        specialArgs: allArgs.filter((a) => a.name.startsWith("-"))
+            .map((a) => {
+                a.name = a.name.substring(1);
+                return a;
+            }),
         type: args[0],
     };
 }

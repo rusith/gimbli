@@ -13,6 +13,8 @@ export async function run(args: string[]) {
     if (!validated.isValid) {
         validated.errors.forEach((e) => logError(e));
         return;
+    } else if (validated.warnings.length) {
+        validated.warnings.forEach((e) => logWarning(e));
     }
 
     args = getRelevantArguments(args);
@@ -20,15 +22,19 @@ export async function run(args: string[]) {
     const template = await findTemplate(command);
     const redTemplate = await readTemplate(template);
     const objects = objectify(redTemplate);
-    logInfo("Arguments: ");
-    for (const arg of command.args) {
-        const accepted = objects.args.find((a) => a.name === arg.name);
-        if (accepted) {
-            logInfo(`  ${accepted.name}: ${accepted.value}`);
-        } else {
-            logWarning(`  ${arg.name}: ignored (not declared in template)`);
+
+    if (objects.args.length) {
+        logInfo("Arguments: ");
+        for (const arg of command.args) {
+            const accepted = objects.args.find((a) => a.name === arg.name);
+            if (accepted) {
+                logInfo(`  ${accepted.name}: ${accepted.value}`);
+            } else {
+                logWarning(`  ${arg.name}: ignored (not declared in template)`);
+            }
         }
     }
+
     const commands = processTemplate(objects);
     for (const wf of commands.writeFiles) {
         logInfo(`Writing file ${wf.fullPath}`);
