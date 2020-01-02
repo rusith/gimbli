@@ -41,13 +41,13 @@ export function getCurrentDirectory() {
 }
 
 export async function writeFile(...args) {
-    writeFileMock(...args);
+    return writeFileMock(...args);
 }
 
 export async function createDirectory(...args) {
-    mkDirMock(...args);
+    return mkDirMock(...args);
 }
 
 export function exists(...args) {
-    existsMock(...args);
+    return existsMock(...args);
 }

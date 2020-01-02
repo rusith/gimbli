@@ -1,6 +1,7 @@
 import {getRelevantArguments} from "./cli/cliUtils";
 import {validate} from "./cli/commandLineInputValidation";
 import {readArguments} from "./cli/readCommands";
+import {getConfigFromParameters} from "./config/configuring";
 import {logError, logInfo, logSuccess, logWarning} from "./logging/logs";
 import {objectify} from "./objectifying/objectifier";
 import {processTemplate} from "./processing/templateProcessing";
@@ -19,11 +20,12 @@ export async function run(args: string[]) {
 
     args = getRelevantArguments(args);
     const command = readArguments(args);
-    const template = await findTemplate(command);
+    const config = getConfigFromParameters(command.specialArgs);
+    const template = await findTemplate(command, config);
     const redTemplate = await readTemplate(template);
     const objects = objectify(redTemplate);
 
-    if (objects.args.length) {
+    if (command.args.length) {
         logInfo("Arguments: ");
         for (const arg of command.args) {
             const accepted = objects.args.find((a) => a.name === arg.name);

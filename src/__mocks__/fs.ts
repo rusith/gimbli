@@ -31,7 +31,7 @@ export function setMockFn(fn: any, mock: any) {
         writeFileMock = mock;
     } else if (fn === mkdir) {
         mkdirMock = mock;
-    } else if (fn === exists) {
+    } else if (fn === existsSync) {
         existsMock = mock;
     }
 }
@@ -42,23 +42,23 @@ const path = require("path");
 const fs = jest.genMockFromModule("fs") as any;
 
 function readdir(p, opt, callback)  {
-    readdirMock(p, opt, callback);
+    return readdirMock(p, opt, callback);
 }
 
 function readFile(p, callback) {
-    readFileMock(p, callback);
+    return readFileMock(p, callback);
 }
 
 function writeFile(p, content, callback) {
-    writeFileMock(p, content, callback);
+    return writeFileMock(p, content, callback);
 }
 
 function mkdir(p, options, callback) {
-    mkdirMock(p, options, callback);
+    return mkdirMock(p, options, callback);
 }
 
-function exists(pa) {
-    existsMock(pa);
+function existsSync(pa) {
+    return existsMock(pa);
 }
 
 fs.readdir = readdir;
@@ -66,4 +66,5 @@ fs.readFile = readFile;
 fs.writeFile = writeFile;
 fs.mkdir = mkdir;
 fs.setMockFn = setMockFn;
+fs.existsSync = existsSync;
 module.exports = fs;
