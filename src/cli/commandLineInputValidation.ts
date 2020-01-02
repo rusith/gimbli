@@ -1,3 +1,5 @@
+import {specialArguments} from "../config/constants";
+
 export function validate(args: string[]) {
     if (args.length < 4) {
         return {
@@ -10,7 +12,7 @@ export function validate(args: string[]) {
     const specialArgs = args.filter((a) => a.startsWith("--"))
         .map((a) => a.substring(2));
 
-    const warnings = specialArgs.filter((sa) => 0 > ["templateDir"].indexOf(sa))
+    const warnings = specialArgs.filter((a) => !specialArguments.isOne(a))
         .map((sa) => `${sa} (--${sa}) is not a recognized argument`);
 
     return  {
