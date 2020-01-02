@@ -75,5 +75,5 @@ export function createDirectory(dir: string): Promise<void> {
 }
 
 export function exists(filePath: string): boolean {
-    return fs.existsSync(filePath);
+    return fs.existsSync(path.resolve(filePath));
 }

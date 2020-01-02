@@ -2,6 +2,7 @@ import * as fs from "fs";
 import * as path from "path";
 import {run} from "../index";
 import * as logging from "../logging/logs";
+import * as fileUtils from "../utils/fileUtils";
 jest.mock("fs");
 jest.mock("../logging/logs");
 
@@ -40,6 +41,7 @@ content
             ok = c === "content\n";
             callback(null);
         });
+        (fs as any).setMockFn(fs.existsSync, () => true);
 
         await run(args);
 
