@@ -3,7 +3,7 @@
 [![codecov](https://codecov.io/gh/rusith/gimbli/branch/master/graph/badge.svg)](https://codecov.io/gh/rusith/gimbli)
 ![](https://github.com/rusith/gimbli/workflows/Test/badge.svg)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/50acc66394c747e7b4cd642fb731cf5a)](https://www.codacy.com/manual/rusith/gimbli?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=rusith/gimbli&amp;utm_campaign=Badge_Grade)
-
+[![npm](https://img.shields.io/npm/v/gimbli?color=red&label=NPM)](https://www.npmjs.com/package/gimbli)
 ## NOT READY FOR GENERAL USE YET
 
 Gimbli is a command line utility that can generate multiple files using a single template file. this tool is still in development and I **cannot recommend
