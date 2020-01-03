@@ -68,8 +68,11 @@ describe("getConfirmation", () => {
         const question = "Do you confirm this action";
         let called = false;
         (readline as any).setMockFn(readline.createInterface, jest.fn().mockReturnValue({
+            close: () => false,
             question: jest.fn()
-                .mockImplementation((q, c) => { called = q === `${question} (y/n)`; c("y"); return { close: () => null }; }),
+                .mockImplementation((q, c) => {
+                    called = q === `${question} (y/n)`; c("y");
+                }),
         }));
 
         await getConfirmation(question);
@@ -78,6 +81,7 @@ describe("getConfirmation", () => {
     test("Should return true if the user confirms the action with simple y", async () => {
         const question = "Do you confirm this action";
         (readline as any).setMockFn(readline.createInterface, jest.fn().mockReturnValue({
+            close: () => false,
             question: jest.fn()
                 .mockImplementation((q, c) => { c("y"); }),
         }));
@@ -88,6 +92,7 @@ describe("getConfirmation", () => {
     test("Should return true if the user confirms the action with simple y and extra text", async () => {
         const question = "Do confirm this action";
         (readline as any).setMockFn(readline.createInterface, jest.fn().mockReturnValue({
+            close: () => false,
             question: jest.fn()
                 .mockImplementation((q, c) => { c("yes"); }),
         }));
@@ -98,6 +103,7 @@ describe("getConfirmation", () => {
     test("Should return true if the user confirms the action with capital Y", async () => {
         const question = "Do you confirm this action";
         (readline as any).setMockFn(readline.createInterface, jest.fn().mockReturnValue({
+            close: () => false,
             question: jest.fn()
                 .mockImplementation((q, c) => { c("Y"); }),
         }));
@@ -108,6 +114,7 @@ describe("getConfirmation", () => {
     test("Should return true if the user confirms the action with capital Y and extra text", async () => {
         const question = "Do confirm this action";
         (readline as any).setMockFn(readline.createInterface, jest.fn().mockReturnValue({
+            close: () => false,
             question: jest.fn()
                 .mockImplementation((q, c) => { c("Yes no"); }),
         }));
@@ -118,6 +125,7 @@ describe("getConfirmation", () => {
     test("Should return false if the SIGINT is called", async () => {
         const question = "Do confirm this action";
         (readline as any).setMockFn(readline.createInterface, jest.fn().mockReturnValue({
+            close: () => false,
             on: jest.fn().mockImplementation((e, callback) => {
                 if (e === "SIGINT") {
                     setTimeout(callback, 10);
@@ -129,5 +137,4 @@ describe("getConfirmation", () => {
 
         expect(await getConfirmation(question)).toBeFalsy();
     });
-
 });

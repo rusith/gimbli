@@ -16,7 +16,8 @@ export async function getConfirmation(question: string): Promise<boolean> {
             output: process.stdout,
         });
 
-        rl.question(`${question} (y/n)  `, (answer) => {
+        global.console.log(...getColoredText(`${question} (y/n)  `, colors.fgYellow));
+        rl.question("", (answer) => {
             const firstLetter =  answer[0];
             rl.close();
             resolve(firstLetter.toLowerCase() === "y");

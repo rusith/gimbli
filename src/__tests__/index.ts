@@ -1,8 +1,8 @@
 import * as fs from "fs";
 import * as path from "path";
+import * as cliUtils from "../cli/cliUtils";
 import {run} from "../index";
 import * as logging from "../logging/logs";
-import * as cliUtils from "../cli/cliUtils";
 jest.mock("fs");
 jest.mock("../logging/logs");
 jest.mock("../cli/cliUtils");
