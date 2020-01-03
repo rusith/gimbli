@@ -27,7 +27,7 @@ Without a generator you have to create files again and again. But with Gimbli, y
 and put your bilerplate code inside the template.
 
 ```
-@# file($path/$name.tsx) #@
+@# file($path/$name.tsx)
 import React from "react";
 import styles from "./$name.module.css";
 
@@ -43,20 +43,20 @@ const Component: React.FC<IProps> = () => {
 };
 
 export default Component;
-@#@
+#@
 
 
-@# file($path/$name.module.css) #@
+@# file($path/$name.module.css)
 .root {
 
 }
-@#@
+#@
 
 
-@# file($path/index.ts) #@
+@# file($path/index.ts)
 import $name from "./$name.tsx";
 export default $name;
-@#@
+#@
 ```
 
 Now you can run the command `gimbli component components/button/Button`

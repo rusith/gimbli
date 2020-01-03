@@ -28,9 +28,9 @@ describe("run", () => {
             }
         });
 
-        const content = `@#file($path/$name.cs)#@
+        const content = `@#file($path/$name.cs)
 content
-@#@`;
+#@`;
 
         (fs as any).setMockFn(fs.readFile, (p, callback) => {
             callback(null, content);

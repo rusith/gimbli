@@ -7,9 +7,9 @@ describe("objectifier.findFileSections", () => {
 
         function testContent(content: string, config: string) {
             const text = `
-@#file(${config})#@
+@#file(${config})
 ${content}
-@#@
+#@
         k`;
             const result = findFileSections(text);
             expect(result.length).toBe(1);
@@ -23,13 +23,13 @@ ${content}
 
     test("Should identify multiple file correctly", () => {
         const text = `
-@#file(configOne)#@
+@#file(configOne)
 contentOne
-@#@
+#@
 
-@#file(configTwo)#@
+@#file(configTwo)
 contentTwo
-@#@
+#@
         k`;
 
         const result = findFileSections(text);
@@ -44,9 +44,9 @@ contentTwo
     test("Should return an empty list is there are no sections", () => {
 
         const text = `
-@#args#@
+@#args
 contentOne
-@#@
+#@
         k`;
         
         const result = findFileSections(text);
@@ -55,9 +55,9 @@ contentOne
 
     test("Should handle arbitrary spaces", () => {
         const text = `
-@# file   (  configOne  )  #@
+@# file   (  configOne  )
 contentOne
-@#@
+#@
 
         k`;
 
@@ -70,9 +70,9 @@ contentOne
 
     test("Starting EOL should be removed from the content", () => {
         const text = `
-@# file   (  configOne  )  #@
+@# file   (  configOne  )
 contentOne
-@#@
+#@
 
         k`;
 
@@ -82,11 +82,11 @@ contentOne
 
     test("Starting EOL should be removed from the content - when content is multiline", () => {
         const text = `
-@# file   (  configOne  )  #@
+@# file   (  configOne  )
 abc
 def
 contentOne
-@#@
+#@
 
         k`;
 
@@ -96,11 +96,11 @@ contentOne
 
     test("Deliberate spaces in the start should be perceived", () => {
         const text = `
-@# file   (  configOne  )  #@
+@# file   (  configOne  )
   abc
 def
 contentOne
-@#@
+#@
 
         k`;
 
@@ -110,7 +110,7 @@ contentOne
 
     test("Should not fail if content doesn't have new lines", () => {
         const text = `
-@# file   (  configOne  )  #@  contentOne  @#@
+@# file   (  configOne  )  contentOne  #@
 
         k`;
 
@@ -124,9 +124,9 @@ describe("objectifier.objectify", () => {
 
         function testContent(content: string, config: string) {
             const text = `
-@#file(${config})#@
+@#file(${config})
 ${content}
-@#@
+#@
         k`;
             const template: ITemplate = {
                 command: null,
@@ -179,10 +179,10 @@ ${content}
                 type: null,
             },
             content: `
-@# args #@
+@# args 
 key
 somethingElse
-@#@
+#@
             `,
             file: null,
             name: "test",
@@ -217,12 +217,12 @@ somethingElse
                 type: null,
             },
             content: `
-@# args #@
+@# args 
 key
 component name
 Some other thing
 somethingElse
-@#@
+#@
             `,
             file: null,
             name: "test",
@@ -259,21 +259,21 @@ somethingElse
                 type: null,
             },
             content: `
-@# args #@
+@# args
 className
-@#@
+#@
 
-@# file($path/$name.tsx) #@
+@# file($path/$name.tsx)
 export default class {{className}} {
 
 }
-@#@
+#@
 
-@# file($path/$name.module.css) #@
+@# file($path/$name.module.css)
 .{{className}} {
     color: white;
 }
-@#@
+#@
 
             `,
             file: null,
@@ -306,12 +306,12 @@ export default class {{className}} {
                 specialArgs: [],
                 type: null,
             },
-            content: `@# args #@
+            content: `@# args
 className
-@#@
-@# file(test.txt) #@
+#@
+@# file(test.txt)
 content
-@#@
+#@
             `,
             file: null,
             name: "test",
@@ -331,16 +331,16 @@ content
 describe("objectifier.findArgSection", () => {
     test("Should identify a the section", () => {
         const content = `
-@# args #@
+@# args 
 test
-@#@
+#@
 `;
         const result = findArgSection(content);
         expect(result.arguments[0]).toBe("test");
     });
     test("Should return empty list if the section is empty", () => {
         const content = `
-@# args #@@#@
+@# args #@
 `;
         const result = findArgSection(content);
         expect(result.arguments.length).toBe(0);
@@ -348,7 +348,7 @@ test
 
     test("Should return empty list if the section is only white spaces", () => {
         const content = `
-@# args #@  @#@
+@# args   #@
 `;
         const result = findArgSection(content);
         expect(result.arguments.length).toBe(0);
@@ -356,12 +356,12 @@ test
 
     test("Should return empty list if the section is only white spaces with newline", () => {
         const content = `
-@# args #@
+@# args
   
     
 
 
-@#@
+#@
 `;
         const result = findArgSection(content);
         expect(result.arguments.length).toBe(0);
@@ -369,12 +369,12 @@ test
 
     test("Arguments should be words", () => {
         const content = `
-@# args #@
+@# args
 key
 component name
 Some other thing
 somethingElse
-@#@
+#@
 `;
         const result = findArgSection(content);
         expect(result.arguments.length).toBe(4);
@@ -386,12 +386,22 @@ somethingElse
 
     test("Should return start and end of the section", () => {
         const content = `
-@# args #@
+@# args
 key
-@#@
+#@
 `;
         const result = findArgSection(content);
         expect(result.start).toBe(1);
-        expect(result.end).toBe(19);
+        expect(result.end).toBe(15);
+    });
+});
+
+describe("findIfs", () => {
+    describe("Should find if statements in the template", () => {
+        const content = `
+@#if(something)
+@#file($name.txt)
+#@
+`;
     });
 });

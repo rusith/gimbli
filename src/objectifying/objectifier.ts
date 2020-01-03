@@ -2,12 +2,13 @@ import {ITemplate, ITemplateDefinition} from "../models";
 import {matchMultiple} from "../utils/regexUtils";
 import {IArgumentSection} from "./models/IArgumentSection";
 import {IFileSection} from "./models/IFileSection";
+import {IIfStatement} from "./models/IIfStatement";
 
 const EOL = /\r\n|\r|\n/;
 
 export function findFileSections(fileContent: string): IFileSection[] {
-    const startRegex = /@#\s*file\s*\((.*)\)\s*#@/;
-    const endRegex = /@#@/;
+    const startRegex = /@#\s*file\s*\((.*)\)/;
+    const endRegex = /#@/;
     const startMatches = matchMultiple(startRegex, fileContent);
     const endMatches = matchMultiple(endRegex, fileContent);
 
@@ -51,8 +52,8 @@ export function objectify(template: ITemplate): ITemplateDefinition {
 }
 
 export function findArgSection(fileContent: string): IArgumentSection {
-    const startRegex = /@#\s*args\s*#@/;
-    const endRegex = /@#@/;
+    const startRegex = /@#\s*args\s*/;
+    const endRegex = /#@/;
     const startMatch = matchMultiple(startRegex, fileContent)[0];
     const endMatch = matchMultiple(endRegex, fileContent)[0];
 
@@ -80,4 +81,8 @@ export function findArgSection(fileContent: string): IArgumentSection {
         end,
         start,
     };
+}
+
+export function findIfs(fileContent: string): IIfStatement[] {
+    return null;
 }
