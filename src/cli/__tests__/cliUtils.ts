@@ -69,7 +69,7 @@ describe("getConfirmation", () => {
         let called = false;
         (readline as any).setMockFn(readline.createInterface, jest.fn().mockReturnValue({
             question: jest.fn()
-                .mockImplementation((q, c) => { called = q === `${question}? (Y/n)`; c("y"); }),
+                .mockImplementation((q, c) => { called = q === `${question} (y/n)`; c("y"); return { close: () => null }; }),
         }));
 
         await getConfirmation(question);

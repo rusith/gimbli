@@ -2,9 +2,10 @@ import * as fs from "fs";
 import * as path from "path";
 import {run} from "../index";
 import * as logging from "../logging/logs";
-import * as fileUtils from "../utils/fileUtils";
+import * as cliUtils from "../cli/cliUtils";
 jest.mock("fs");
 jest.mock("../logging/logs");
+jest.mock("../cli/cliUtils");
 
 describe("run", () => {
     test("Should call correct apis for simple template", async () => {
@@ -42,6 +43,7 @@ content
             callback(null);
         });
         (fs as any).setMockFn(fs.existsSync, () => true);
+        (cliUtils as any).setMockFn(cliUtils.getConfirmation, async () => true);
 
         await run(args);
 

@@ -16,12 +16,16 @@ export async function getConfirmation(question: string): Promise<boolean> {
             output: process.stdout,
         });
 
-        rl.question(question, (answer) => {
+        rl.question(`${question} (y/n)  `, (answer) => {
             const firstLetter =  answer[0];
+            rl.close();
             resolve(firstLetter.toLowerCase() === "y");
         });
 
-        rl.on("SIGINT", () => resolve(false));
+        rl.on("SIGINT", () => {
+            rl.close();
+            resolve(false);
+        });
     });
 }
 
