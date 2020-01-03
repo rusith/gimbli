@@ -1,13 +1,12 @@
+import {mapMocks} from "../../utils/mocking";
+
 let getTemplateFileOfFolderMock: any = () => null;
 let isTemplateFolderPresentMock: any = () => null;
 
-export function setMockFn(fn: any, mock: any) {
-    if (fn === getTemplateFileOfFolder) {
-        getTemplateFileOfFolderMock = mock;
-    } else if (fn === isTemplateFolderPresent) {
-        isTemplateFolderPresentMock = mock;
-    }
-}
+export const setMockFn = mapMocks([
+    [getTemplateFileOfFolder, (f) => { getTemplateFileOfFolderMock = f; }],
+    [isTemplateFolderPresent, (f) => { isTemplateFolderPresentMock = f; }],
+]);
 
 export async function getTemplateFileOfFolder(...args) {
     return getTemplateFileOfFolderMock(...args);

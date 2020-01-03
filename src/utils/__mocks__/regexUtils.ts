@@ -1,13 +1,12 @@
+import {mapMocks} from "../mocking";
+
 let  matchMultipleMock: any = () => null;
 let  replaceMock: any = () => null;
 
-export function setMockFn(fn: any, mock: any) {
-    if (fn === matchMultiple) {
-        matchMultipleMock = mock;
-    } else if (fn === replace) {
-        replaceMock = mock;
-    }
-}
+export const setMockFn = mapMocks([
+    [replace, (f) => { replaceMock = f; }],
+    [matchMultiple, (f) => { matchMultipleMock = f; }],
+]);
 
 export function matchMultiple(...args) {
     return matchMultipleMock(...args);

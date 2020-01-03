@@ -82,3 +82,31 @@ describe("CommandWriter.write", () => {
         expect(calls[1][1]).toBe(commands.writeFiles[1].content);
     });
 });
+
+// describe("CommandWriter.write", () => {
+//     test("Should call the internal write function with correct data", async () => {
+//         const commands: ICommandSet = {
+//             template: null,
+//             writeFiles: [{
+//                 content: "content",
+//                 fullPath: "/rusith/app/App.tsx",
+//             }, {
+//                 content: "content one",
+//                 fullPath: "/rusith/app/App.module.css",
+//             }],
+//         };
+//
+//         const calls = [];
+//
+//         (fileUtils as any).setMockFn(fileUtils.writeFile, async (path: string, content: string) => {
+//             calls.push([path, content]);
+//         });
+//         await writeCommands(commands);
+//
+//         expect(calls[0][0]).toBe(commands.writeFiles[0].fullPath);
+//         expect(calls[0][1]).toBe(commands.writeFiles[0].content);
+//
+//         expect(calls[1][0]).toBe(commands.writeFiles[1].fullPath);
+//         expect(calls[1][1]).toBe(commands.writeFiles[1].content);
+//     });
+// });

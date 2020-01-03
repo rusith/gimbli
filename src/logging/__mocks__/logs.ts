@@ -1,19 +1,16 @@
+import {mapMocks} from "../../utils/mocking";
+
 let logInfoMock: any = () => null;
 let logWarningMock: any = () => null;
 let logSuccessMock: any = () => null;
 let logErrorMock: any = () => null;
 
-export function setMockFn(fn: any, mock: any) {
-    if (fn === logInfo) {
-        logInfoMock = mock;
-    } else if (fn === logWarning) {
-        logWarningMock = mock;
-    } else if (fn === logError) {
-        logErrorMock = mock;
-    } else if (fn === logSuccess) {
-        logSuccessMock =  mock;
-    }
-}
+export const setMockFn =  mapMocks([
+    [logInfo, (f) => { logInfoMock = f; }],
+    [logWarning, (f) => { logWarningMock = f; }],
+    [logError, (f) => { logErrorMock = f; }],
+    [logSuccess, (f) => { logSuccessMock = f; }],
+]);
 
 export function logInfo(...args) {
     logInfoMock(...args);
@@ -30,10 +27,3 @@ export function logError(...args) {
 export function logSuccess(...args) {
     logSuccessMock(...args);
 }
-
-export const colors = {
-    fgGreen: "\x1b[32m",
-    fgRed: "\x1b[31m",
-    fgYellow: "\x1b[33m",
-    reset: "\x1b[0m",
-};

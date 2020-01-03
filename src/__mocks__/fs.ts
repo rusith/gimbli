@@ -1,5 +1,7 @@
 "use strict";
 
+import {mapMocks} from "../utils/mocking";
+
 let readdirMock = (p, args, callback) => callback(null, [
     {
         isDirectory: () => false,
@@ -20,25 +22,15 @@ let readdirMock = (p, args, callback) => callback(null, [
 let readFileMock = (p, callback) => callback(null, "data");
 let writeFileMock = (p, content, callback) => callback(null, content);
 let mkdirMock = (p, options, callback) => callback(null, null);
-let existsMock = (p) => false;
+let existsMock: any = () => false;
 
-export function setMockFn(fn: any, mock: any) {
-    if (fn === readdir) {
-        readdirMock = mock;
-    } else if (fn === readFile) {
-        readFileMock = mock;
-    } else if (fn === writeFile) {
-        writeFileMock = mock;
-    } else if (fn === mkdir) {
-        mkdirMock = mock;
-    } else if (fn === existsSync) {
-        existsMock = mock;
-    }
-}
-
-// tslint:disable-next-line:no-var-requires
-const path = require("path");
-
+export const setMockFn = mapMocks([
+    [readdir, (f) => { readdirMock = f; }],
+    [readFile, (f) => { readFileMock = f; }],
+    [writeFile, (f) => { writeFileMock = f; }],
+    [mkdir, (f) => { mkdirMock = f; }],
+    [existsSync, (f) => { existsMock = f; }],
+]);
 const fs = jest.genMockFromModule("fs") as any;
 
 function readdir(p, opt, callback)  {

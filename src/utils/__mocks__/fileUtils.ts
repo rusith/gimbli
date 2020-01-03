@@ -1,3 +1,5 @@
+import {mapMocks} from "../mocking";
+
 let getDirectoriesInsideDirectoryMock: any = () => null;
 let getFilesOfDirectoryMock: any = () => null;
 let getFileContentMock: any = () => null;
@@ -6,23 +8,15 @@ let writeFileMock: any = () => null;
 let mkDirMock: any = () => null;
 let existsMock: any = () => null;
 
-export function setMockFn(fn: any, mock: any) {
-    if (fn === getDirectoriesInsideDirectory) {
-        getDirectoriesInsideDirectoryMock = mock;
-    } else if (fn === getFilesOfDirectory) {
-        getFilesOfDirectoryMock = mock;
-    } else if (fn === getFileContent) {
-        getFileContentMock = mock;
-    } else if (fn === getCurrentDirectory ) {
-        getCurrentDirectoryMock = mock;
-    } else if (fn === writeFile) {
-        writeFileMock = mock;
-    } else if (fn === createDirectory) {
-        mkDirMock = mock;
-    } else if (fn === exists) {
-        existsMock = mock;
-    }
-}
+export const setMockFn = mapMocks([
+    [getDirectoriesInsideDirectory, (f) => { getDirectoriesInsideDirectoryMock = f; }],
+    [getFilesOfDirectory, (f) => { getFilesOfDirectoryMock = f; }],
+    [getFileContent, (f) => { getFileContentMock = f; }],
+    [getCurrentDirectory, (f) => { getCurrentDirectoryMock = f; }],
+    [writeFile, (f) => { writeFileMock = f; }],
+    [createDirectory, (f) => { mkDirMock = f; }],
+    [exists, (f) => { existsMock = f; }],
+]);
 
 export function getDirectoriesInsideDirectory(...args): Promise<string[]> {
     return getDirectoriesInsideDirectoryMock(...args);
