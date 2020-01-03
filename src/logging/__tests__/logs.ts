@@ -1,4 +1,5 @@
-import {colors, logError, logInfo, logSuccess, logWarning} from "../logs";
+import {colors} from "../../cli/cliUtils";
+import {logError, logInfo, logSuccess, logWarning} from "../logs";
 
 describe("logs.logInfo", () => {
     test("Should call console log with right parameters", () => {
