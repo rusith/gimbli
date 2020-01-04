@@ -1,3 +1,4 @@
+/* tslint:disable:no-trailing-whitespace */
 import * as fs from "fs";
 import * as path from "path";
 import * as cliUtils from "../cli/cliUtils";
@@ -31,9 +32,14 @@ describe("run", () => {
         const content = `@#file($path/$name.cs)
 content
 #@`;
+        const configFile = "{ }";
 
         (fs as any).setMockFn(fs.readFile, (p, callback) => {
-            callback(null, content);
+            if (p === "./gimbli.json") {
+                callback(null, configFile);
+            } else {
+                callback(null, content);
+            }
         });
 
         let ok = false;

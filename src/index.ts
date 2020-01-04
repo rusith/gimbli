@@ -1,7 +1,8 @@
+/* tslint:disable:no-trailing-whitespace */
 import {getRelevantArguments} from "./cli/cliUtils";
 import {validate} from "./cli/commandLineInputValidation";
 import {readArguments} from "./cli/readCommands";
-import {getConfigFromParameters} from "./config/configuring";
+import {getConfiguration} from "./config/configuring";
 import {logError, logInfo, logSuccess, logWarning} from "./logging/logs";
 import {objectify} from "./objectifying/objectifier";
 import {processTemplate} from "./processing/templateProcessing";
@@ -9,7 +10,15 @@ import {readTemplate} from "./reading/readingTemplate";
 import {findTemplate} from "./templateDiscovery/templateFinding";
 import {writeCommands} from "./writing/commandWriting";
 
+const banner = `
+ _____ _       _   _ _ 
+|   __|_|_____| |_| |_|
+|  |  | |     | . | | |
+|_____|_|_|_|_|___|_|_|
+`;
+
 export async function run(args: string[]) {
+    logInfo(banner);
     const validated = validate(args);
     if (!validated.isValid) {
         validated.errors.forEach((e) => logError(e));
@@ -20,7 +29,7 @@ export async function run(args: string[]) {
 
     args = getRelevantArguments(args);
     const command = readArguments(args);
-    const config = getConfigFromParameters(command.specialArgs);
+    const config = await getConfiguration(command.specialArgs);
     const template = await findTemplate(command, config);
     const redTemplate = await readTemplate(template);
     const objects = objectify(redTemplate);
@@ -38,9 +47,6 @@ export async function run(args: string[]) {
     }
 
     const commands = processTemplate(objects);
-    for (const wf of commands.writeFiles) {
-        logInfo(`Writing file ${wf.fullPath}`);
-    }
     await writeCommands(commands);
     logSuccess("Successfully completed");
 }

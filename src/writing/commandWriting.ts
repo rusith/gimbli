@@ -1,5 +1,6 @@
 import * as path from "path";
 import {getConfirmation} from "../cli/cliUtils";
+import {logInfo} from "../logging/logs";
 import {ICommandSet, IWriteFileCommand} from "../models";
 import {createDirectory, exists, writeFile} from "../utils/fileUtils";
 
@@ -33,5 +34,6 @@ export async function writeFileCommand(command: IWriteFileCommand): Promise<void
     if (!exists(directory)) {
         await createDirectory(directory);
     }
+    logInfo(`Writing file ${command.fullPath}`);
     return await writeFile(command.fullPath, command.content);
 }
