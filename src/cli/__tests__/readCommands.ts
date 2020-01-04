@@ -1,5 +1,5 @@
 import {ICommandArgument} from "../models/ICommandArgument";
-import {readArguments, readExtraArguments} from "../readCommands";
+import {readArguments, readExtraArguments, readValue} from "../readCommands";
 
 describe("readArguments", () => {
     test("Should read the first input as Type ", () => {
@@ -34,6 +34,12 @@ describe("readArguments", () => {
 
         expect(result.specialArgs[1].name).toBe("someOtherArg");
         expect(result.specialArgs[1].value).toBe("argValue");
+    });
+
+    test("Should read compound values", () => {
+        const result = readArguments(["component", "App", "-someArg", "#j[1,2]"]);
+        expect(result.args[0].value[0]).toBe(1);
+        expect(result.args[0].value[1]).toBe(2);
     });
 });
 
@@ -89,5 +95,53 @@ describe("readExtraArguments", () => {
         expect(result[0].name).toBe("componentName");
         expect(result[0].value).toBe("AppComponent");
     });
+});
 
+describe("readValue", () => {
+    test("Should read normal string value as string", () => {
+        const result = readValue("test");
+        expect(result).toBe("test");
+    });
+
+    test("Should read normal string value as string", () => {
+        const result = readValue("test");
+        expect(result).toBe("test");
+    });
+
+    test("Should read integer as number", () => {
+        const result = readValue("1249");
+        expect(result).toBe(1249);
+    });
+
+    test("Should read float as number", () => {
+        const result = readValue("12.49");
+        expect(result).toBe(12.49);
+    });
+
+    test("Should read compound list as list", () => {
+        const result = readValue('#j["val1", "val2"]');
+        expect(result.length).toBe(2);
+        expect(result[0]).toBe("val1");
+        expect(result[1]).toBe("val2");
+    });
+
+    test("Should read compound object as object", () => {
+        const result = readValue('#j{"name": "Gimbli", "values": [1,2]}');
+        expect(result.name).toBe("Gimbli");
+        expect(result.values[0]).toBe(1);
+        expect(result.values[1]).toBe(2);
+    });
+
+    test("Should read compound object as object multiline", () => {
+        const result = readValue(`#j
+{
+    "name": "Gimbli",
+    "values": [1,2]
+}
+`);
+
+        expect(result.name).toBe("Gimbli");
+        expect(result.values[0]).toBe(1);
+        expect(result.values[1]).toBe(2);
+    });
 });
