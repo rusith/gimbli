@@ -42,7 +42,7 @@ export function processConfig(config: string, def: ITemplate, ags: IArgumentDefi
 
     const [name, pathOfPath] = splitPath(def.path);
     const currentLocation = getCurrentDirectory();
-    let p = replace(config, "$path", path.join(currentLocation, pathOfPath));
+    let p = replace(config, "$path", pathOfPath);
     p = replace(p, "$name", name);
     p = replace(p, "/", substitute);
 
@@ -55,7 +55,7 @@ export function processConfig(config: string, def: ITemplate, ags: IArgumentDefi
     p = replace(template(data), substitute, path.sep);
 
     return {
-        fullPath: p,
+        fullPath: path.join(currentLocation, p),
     };
 }
 

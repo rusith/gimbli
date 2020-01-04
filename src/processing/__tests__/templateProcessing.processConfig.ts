@@ -86,4 +86,21 @@ describe("processConfig", () => {
         }]);
         expect(result.fullPath).toBe(path.join("rusith", "app", "component", "folder1", "App.tsx"));
     });
+
+    test("A path section before $path should work", () => {
+        (fileUtils as any).setMockFn(fileUtils.getCurrentDirectory, () => path.join("rusith", "app"));
+        const def: ITemplateDefinition = {
+            args: [],
+            files: null,
+            template: {
+                command: null,
+                content: null,
+                file: null,
+                name: "component",
+                path: path.join("common", "App"),
+            },
+        };
+        const result = processConfig("/components/$path/$name.tsx", def.template, []);
+        expect(result.fullPath).toBe(path.join("rusith", "app", "components", "common", "App.tsx"));
+    });
 });
