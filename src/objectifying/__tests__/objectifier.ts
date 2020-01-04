@@ -512,17 +512,4 @@ describe("findIfForFileSection", () => {
         const result = findIfForFileSection(content, fileSection, ifs);
         expect(result).toBe(ifs[1]);
     });
-
-    test("Should identify inlined if", () => {
-        const content = `
-@#if(something2)
-@#if(something3) @#file($name.txt)
-#@
-`;
-        const fileSection = findFileSections(content)[0];
-        const ifs =  findIfs(content);
-        
-        const result = findIfForFileSection(content, fileSection, ifs);
-        expect(result).toBe(ifs[1]);
-    });
 });

@@ -87,7 +87,7 @@ export function findArgSection(fileContent: string): IArgumentSection {
 }
 
 export function findIfs(fileContent: string): IIfStatement[] {
-    const regex = /@#\s*if\s*\((.*?)\)/;
+    const regex = /@#\s*if\s*\((.*)\)/;
     const matches = matchMultiple(regex, fileContent);
     return matches.map((match) => ({
         content: match.groups[0],
