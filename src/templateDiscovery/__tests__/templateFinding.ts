@@ -6,7 +6,7 @@ import {findTemplate} from "../templateFinding";
 jest.mock("../templateDiscoveryUtils");
 jest.mock("../../utils/fileUtils");
 
-describe("TemplateFinder.findTemplate", () => {
+describe("findTemplate", () => {
     test("Should fail if the name is not valid", async () => {
         let err: Error = null;
         try {

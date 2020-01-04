@@ -1,4 +1,4 @@
 export interface IIfStatement {
-    start: number;
+    content: string;
     end: number;
 }

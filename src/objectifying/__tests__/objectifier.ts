@@ -1,8 +1,8 @@
 /* tslint:disable:no-trailing-whitespace */
 import {ITemplate} from "../../models";
-import {findArgSection, findFileSections, objectify} from "../objectifier";
+import {findArgSection, findFileSections, findIfForFileSection, findIfs, objectify} from "../objectifier";
 
-describe("objectifier.findFileSections", () => {
+describe("findFileSections", () => {
     test("Should identify correct sections", () => {
 
         function testContent(content: string, config: string) {
@@ -15,6 +15,7 @@ ${content}
             expect(result.length).toBe(1);
             expect(result[0].config).toBe(config);
             expect(result[0].content).toBe(`${content}\n`);
+            expect(result[0].start).toBe(1);
         }
 
         testContent("content one", "config one");
@@ -119,7 +120,7 @@ contentOne
     });
 });
 
-describe("objectifier.objectify", () => {
+describe("objectify", () => {
     test("Should identify correct sections", () => {
 
         function testContent(content: string, config: string) {
@@ -326,9 +327,45 @@ content
         expect(result.files[0].config).toBe("test.txt");
         expect(result.files[0].content).toBe("content\n");
     });
+
+    test("Result should include ifs", () => {
+        const template: ITemplate = {
+            command: {
+                args: [
+                    {
+                        name: "className",
+                        value: "TestClass",
+                    },
+                ],
+                path: "components/App",
+                specialArgs: [],
+                type: null,
+            },
+            content: `@# args
+className
+#@
+@# if(ifContent)
+@# file(test.txt)
+content
+#@
+            `,
+            file: null,
+            name: "test",
+            path: "",
+        };
+
+        const result = objectify(template);
+        expect(result.args.length).toBe(1);
+        expect(result.args[0].name).toBe("className");
+        expect(result.args[0].value).toBe("TestClass");
+
+        expect(result.files[0].config).toBe("test.txt");
+        expect(result.files[0].content).toBe("content\n");
+        expect(result.files[0].if).toBe("ifContent");
+    });
 });
 
-describe("objectifier.findArgSection", () => {
+describe("findArgSection", () => {
     test("Should identify a the section", () => {
         const content = `
 @# args 
@@ -397,11 +434,95 @@ key
 });
 
 describe("findIfs", () => {
-    describe("Should find if statements in the template", () => {
+    test("Should find if statements in the template", () => {
         const content = `
 @#if(something)
 @#file($name.txt)
 #@
 `;
+        const result = findIfs(content);
+        expect(result[0].content).toBe("something");
+        expect(result[0].end).toBe(16);
+    });
+
+    test("Should find if statements in the template", () => {
+        const content = `
+@#if(something)
+@#file($name.txt)
+#@
+`;
+        const result = findIfs(content);
+        expect(result[0].content).toBe("something");
+        expect(result[0].end).toBe(16);
+    });
+
+    test("Should find multiple if statements in the template", () => {
+        const content = `
+@#if(something)
+@#if(something2)
+@#file($name.txt)
+#@
+`;
+        const result = findIfs(content);
+        expect(result[0].content).toBe("something");
+        expect(result[0].end).toBe(16);
+
+        expect(result[1].content).toBe("something2");
+        expect(result[1].end).toBe(33);
+    });
+});
+
+describe("findIfForFileSection", () => {
+    test("if should be above file section", () => {
+        const content = `
+@#if(something2)
+@#file($name.txt)
+#@
+`;
+        const fileSection = findFileSections(content)[0];
+        const ifs =  findIfs(content);
+        
+        const result = findIfForFileSection(content, fileSection, ifs);
+        expect(result).toBe(ifs[0]);
+    });
+
+    test("if should be above file section - below file", () => {
+        const content = `
+@#file($name.txt)
+#@
+@#if(something2)
+`;
+        const fileSection = findFileSections(content)[0];
+        const ifs =  findIfs(content);
+
+        const result = findIfForFileSection(content, fileSection, ifs);
+        expect(result).toBe(null);
+    });
+
+    test("Should identify correct if from stacked ifs", () => {
+        const content = `
+@#if(something2)
+@#if(something3)
+@#file($name.txt)
+#@
+`;
+        const fileSection = findFileSections(content)[0];
+        const ifs =  findIfs(content);
+
+        const result = findIfForFileSection(content, fileSection, ifs);
+        expect(result).toBe(ifs[1]);
+    });
+
+    test("Should identify inlined if", () => {
+        const content = `
+@#if(something2)
+@#if(something3) @#file($name.txt)
+#@
+`;
+        const fileSection = findFileSections(content)[0];
+        const ifs =  findIfs(content);
+        
+        const result = findIfForFileSection(content, fileSection, ifs);
+        expect(result).toBe(ifs[1]);
     });
 });

@@ -1,5 +1,6 @@
 import * as handlebars from "handlebars";
 import * as path from "path";
+import * as safeEval from "safe-eval";
 import {ICommandSet, IFileDefinition, ITemplate, ITemplateDefinition} from "../models";
 import {IArgumentDefinition} from "../models/IArgumentDefinition";
 import {getCurrentDirectory} from "../utils/fileUtils";
@@ -10,6 +11,14 @@ const substitute = "___PATH_SEPARATOR";
 
 export function processTemplate(def: ITemplateDefinition): ICommandSet {
     const writeFiles = def.files
+        .filter((f) => {
+            if (f.if) {
+                if (!processIf(f.if, def.args, def.template.path)) {
+                    return false;
+                }
+            }
+            return true;
+        })
         .map((file) => {
             return {
                 content: processContent(file, def.template, def.args),
@@ -31,8 +40,7 @@ export function processConfig(config: string, def: ITemplate, ags: IArgumentDefi
         throw new Error("$path is required in the template config");
     }
 
-    const name = path.basename(def.path);
-    const pathOfPath = path.dirname(def.path);
+    const [name, pathOfPath] = splitPath(def.path);
     const currentLocation = getCurrentDirectory();
     let p = replace(config, "$path", path.join(currentLocation, pathOfPath));
     p = replace(p, "$name", name);
@@ -52,12 +60,29 @@ export function processConfig(config: string, def: ITemplate, ags: IArgumentDefi
 }
 
 export function processContent(file: IFileDefinition, temp: ITemplate, args: IArgumentDefinition[] = []): string {
-    const pathOfPath = path.dirname(temp.path);
-    const name = path.basename(temp.path);
+    const [name, pathOfPath] = splitPath(temp.path);
     let content = replace(file.content, "$path", pathOfPath);
     content = replace(content, "$name", name);
     const template = handlebars.compile(content);
     return template(argumentsToData(args));
+}
+
+export function processIf(ifText: string, args: IArgumentDefinition[], templatePath: string): boolean {
+    const data = argumentsToData(args) as any;
+    const [name, pathOfPath] = splitPath(templatePath);
+    if (!data.hasOwnProperty("name")) {
+        data.name = name;
+    }
+    if (!data.hasOwnProperty("path")) {
+        data.path = pathOfPath;
+    }
+    return safeEval(`!!(${ifText})`, data) as boolean;
+}
+
+export function splitPath(fullPath: string) {
+    const pathOfPath = path.dirname(fullPath);
+    const name = path.basename(fullPath);
+    return [name, pathOfPath];
 }
 
 function argumentsToData(args: IArgumentDefinition[]) {

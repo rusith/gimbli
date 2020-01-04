@@ -11,13 +11,13 @@ import {
 
 jest.mock("fs");
 
-describe("FileUtils.currentDirectory", () => {
+describe("currentDirectory", () => {
     test("Should return the current directory", () => {
         expect(getCurrentDirectory()).toBe(process.cwd());
     });
 });
 
-describe("FileUtils.nextDirectory", () => {
+describe("nextDirectory", () => {
     test("Should return next folder if current is null", () => {
         expect(nextDirectory(null, "b")).toBe(path.join("b"));
     });
@@ -41,7 +41,7 @@ describe("FileUtils.nextDirectory", () => {
     });
 });
 
-describe("FileUtils.writeFile", () => {
+describe("writeFile", () => {
     test("Should fail if file name is empty", async () => {
         let err: Error = null;
         try {

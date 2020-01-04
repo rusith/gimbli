@@ -1,6 +1,6 @@
 import { validate} from "../commandLineInputValidation";
 
-describe("CommandLineInputValidator.validate", () => {
+describe("validate", () => {
     test("Not valid if no enough arguments", () => {
         const args = ["exe", "path"]; // default stuff
         const result = validate(args);

@@ -1,7 +1,7 @@
 import {colors} from "../../cli/cliUtils";
 import {logError, logInfo, logSuccess, logWarning} from "../logs";
 
-describe("logs.logInfo", () => {
+describe("logInfo", () => {
     test("Should call console log with right parameters", () => {
         const spy = jest.spyOn(global.console, "log");
         logInfo("Doing work");
@@ -9,7 +9,7 @@ describe("logs.logInfo", () => {
     });
 });
 
-describe("logs.logWarning", () => {
+describe("logWarning", () => {
     test("Should call console log with right parameters", () => {
         const spy = jest.spyOn(global.console, "log");
         const message = "This is not right";
@@ -18,7 +18,7 @@ describe("logs.logWarning", () => {
     });
 });
 
-describe("logs.logError", () => {
+describe("logError", () => {
     test("Should call console log with right parameters", () => {
         const spy = jest.spyOn(global.console, "log");
         const message = "Something went wrong";
@@ -27,7 +27,7 @@ describe("logs.logError", () => {
     });
 });
 
-describe("logs.logSuccess", () => {
+describe("logSuccess", () => {
     test("Should call console log with right parameters", () => {
         const spy = jest.spyOn(global.console, "log");
         const message = "Everything went fine";

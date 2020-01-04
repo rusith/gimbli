@@ -2,7 +2,7 @@ import * as readline from "readline";
 import {colors, getColoredText, getConfirmation, getRelevantArguments} from "../cliUtils";
 jest.mock("readline");
 
-describe("CliUtils.getRelevantArguments", () => {
+describe("getRelevantArguments", () => {
 
     test("Get arguments should return empty if input is empty", () => {
         const result = getRelevantArguments([]);

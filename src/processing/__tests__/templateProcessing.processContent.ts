@@ -5,7 +5,7 @@ import {processContent} from "../templateProcessing";
 
 jest.mock("../../utils/fileUtils");
 
-describe("TemplateProcessor.processContent", () => {
+describe("processContent", () => {
     test("Should return static content", () => {
         (fileUtils as any).setMockFn(fileUtils.getCurrentDirectory, () => path.join("rusith", "app"));
         const file: IFileDefinition = {

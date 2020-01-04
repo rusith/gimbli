@@ -1,6 +1,6 @@
 import {matchMultiple, replace} from "../regexUtils";
 
-describe("RegexUtils.matchMultiple", () => {
+describe("matchMultiple", () => {
     test("Should match multiple matches - content should be correct", () => {
         const text = " ab  abc abcdef";
         const regex = /ab\w*/;
@@ -50,7 +50,7 @@ describe("RegexUtils.matchMultiple", () => {
     });
 });
 
-describe("RegexUtils.replace", () => {
+describe("replace", () => {
     test("Should replace all occurrences", () => {
         const str = "Lorem ipsumbla dolor sit ametbla, consectetur adipiscingbla elit. Nunc non.";
         const result = replace(str, "bla", "");

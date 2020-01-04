@@ -1,7 +1,7 @@
 import {ICommandArgument} from "../models/ICommandArgument";
 import {readArguments, readExtraArguments} from "../readCommands";
 
-describe("CommandReader.read", () => {
+describe("readArguments", () => {
     test("Should read the first input as Type ", () => {
         function testInput(inputs: string[]) {
             const command = readArguments(inputs);
@@ -37,7 +37,7 @@ describe("CommandReader.read", () => {
     });
 });
 
-describe("CommandReader.readExtraArguments", () => {
+describe("readExtraArguments", () => {
     test("Should read one extra argument without a value specified. the value should be true", () => {
         const result: ICommandArgument[] = readExtraArguments(["component", "App", "-public"]);
         expect(result[0].name).toBe("public");

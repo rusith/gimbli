@@ -7,7 +7,7 @@ import {writeCommands, writeFileCommand} from "../commandWriting";
 jest.mock("../../utils/fileUtils");
 jest.mock("../../cli/cliUtils");
 
-describe("CommandWriter.writeFileCommand", () => {
+describe("writeFileCommand", () => {
     test("Should call the internal write function with correct data", async () => {
         const commands: ICommandSet = {
             template: null,
@@ -57,7 +57,7 @@ describe("CommandWriter.writeFileCommand", () => {
     });
 });
 
-describe("CommandWriter.write", () => {
+describe("write", () => {
     test("Should call the internal write function with correct data", async () => {
         const commands: ICommandSet = {
             template: null,

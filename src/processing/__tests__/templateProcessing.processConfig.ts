@@ -5,7 +5,7 @@ import {processConfig} from "../templateProcessing";
 
 jest.mock("../../utils/fileUtils");
 
-describe("TemplateProcessor.processConfig", () => {
+describe("processConfig", () => {
     test("Should fail if the config is empty", () => {
         expect(() => processConfig("", null)).toThrowError("Config should not be empty");
     });

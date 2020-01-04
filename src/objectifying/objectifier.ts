@@ -7,7 +7,7 @@ import {IIfStatement} from "./models/IIfStatement";
 const EOL = /\r\n|\r|\n/;
 
 export function findFileSections(fileContent: string): IFileSection[] {
-    const startRegex = /@#\s*file\s*\((.*)\)/;
+    const startRegex = /@#\s*file\s*\((.*?)\)/;
     const endRegex = /#@/;
     const startMatches = matchMultiple(startRegex, fileContent);
     const endMatches = matchMultiple(endRegex, fileContent);
@@ -19,6 +19,7 @@ export function findFileSections(fileContent: string): IFileSection[] {
         return {
             config: match.groups[0],
             content: (eolEx && eolEx.index === 0) ? sub.replace(EOL, "") : sub,
+            start: match.start,
         };
     });
 }
@@ -41,11 +42,13 @@ export function objectify(template: ITemplate): ITemplateDefinition {
     }
 
     const files = findFileSections(content);
+    const ifs = findIfs(content);
     return {
         args: validArguments,
         files: files.map((fs) => ({
             config: fs.config,
             content: fs.content,
+            if: findIfForFileSection(content, fs, ifs)?.content,
         })),
         template,
     };
@@ -84,5 +87,21 @@ export function findArgSection(fileContent: string): IArgumentSection {
 }
 
 export function findIfs(fileContent: string): IIfStatement[] {
-    return null;
+    const regex = /@#\s*if\s*\((.*?)\)/;
+    const matches = matchMultiple(regex, fileContent);
+    return matches.map((match) => ({
+        content: match.groups[0],
+        end: match.end,
+    }));
+}
+
+export function findIfForFileSection(templateContent: string, fileSection: IFileSection, ifs: IIfStatement[]) {
+    return ifs.find((i) => {
+        if (fileSection.start < i.end) {
+            return false;
+        }
+        const contentBetween = templateContent.substring(i.end, fileSection.start);
+        const regex = /\S/;
+        return !regex.exec(contentBetween);
+    }) || null;
 }

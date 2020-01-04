@@ -3,7 +3,7 @@ import {readTemplate} from "../readingTemplate";
 
 jest.mock("../../utils/fileUtils");
 
-describe("TemplateReader.read", () => {
+describe("readTemplate", () => {
     test("Template reader should fail if the template is empty or null", async () => {
         async function testIt(getF: any) {
             (fileUtils as any).setMockFn(fileUtils.getFileContent, getF);

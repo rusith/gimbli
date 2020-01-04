@@ -3,7 +3,7 @@ import {getTemplateFileOfFolder, isTemplateFolderPresent} from "../templateDisco
 
 jest.mock("../../utils/fileUtils");
 
-describe("TemplateDiscoveryUtils.isTemplateFolderPresent", () => {
+describe("isTemplateFolderPresent", () => {
     test("Should return false if the current folder has no directories" , async () => {
         (fileUtils as any).setMockFn(fileUtils.getDirectoriesInsideDirectory, async () => {
             return [];
@@ -19,7 +19,7 @@ describe("TemplateDiscoveryUtils.isTemplateFolderPresent", () => {
     });
 });
 
-describe("TemplateDiscoveryUtils.getTemplateFilesOfFolder", () => {
+describe("getTemplateFilesOfFolder", () => {
     test("Should return an empty list if no files" , async () => {
         (fileUtils as any).setMockFn(fileUtils.getFilesOfDirectory, async () => {
             return [];
