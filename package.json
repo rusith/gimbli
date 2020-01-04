@@ -1,6 +1,6 @@
 {
   "name": "gimbli",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "A file generator that can generate multiple files from a single command with Handlebars support",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
