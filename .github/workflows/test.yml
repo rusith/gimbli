@@ -15,10 +15,10 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node }}
-      - name: Install TsLint
-        run: npm i -g tslint typescript
+      - name: NPM Install
+        run: npm i
       - name: Lint Using TsLint
-        run: tslint --project .
+        run: npm run lint
   test:
     name: Run Tests
     runs-on: ubuntu-latest

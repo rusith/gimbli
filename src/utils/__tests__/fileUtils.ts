@@ -1,3 +1,4 @@
+import * as fs from "fs";
 import * as path from "path";
 import {
     createDirectory,
@@ -66,12 +67,56 @@ describe("File System Functions", () => {
         expect(await getFileContent("/somefile.txt")).toBe("data");
     });
 
+    test("getFilesOfDirectory failed", async () => {
+        (fs as any).setMockFn(fs.readdir, (p, opt, callback) => callback(new Error("test")));
+        let err: Error;
+        try {
+            await getFilesOfDirectory("/somefile");
+        } catch (e) {
+            err = e;
+        }
+        expect(err.message).toBe("test");
+    });
+
+    test("getFileContent failed", async () => {
+        (fs as any).setMockFn(fs.readFile, (p, callback) => callback(new Error("test")));
+        let err: Error;
+        try {
+            await getFileContent("/somefile.txt");
+        } catch (e) {
+            err = e;
+        }
+        expect(err.message).toBe("test");
+    });
+
     test("writeFile", async () => {
         await writeFile("/someFile.txt", "something");
     });
 
+    test("writeFile failed", async () => {
+        (fs as any).setMockFn(fs.writeFile, (p, con, callback) => callback(new Error("test")));
+        let err: Error;
+        try {
+            await writeFile("/somefile.txt", "content");
+        } catch (e) {
+            err = e;
+        }
+        expect(err.message).toBe("test");
+    });
+
     test("createDirectory", async () => {
         await createDirectory("/a/b/c");
+    });
+
+    test("createDirectory failed", async () => {
+        (fs as any).setMockFn(fs.mkdir, (p, opt, callback) => callback(new Error("test")));
+        let err: Error;
+        try {
+            await createDirectory("/somefile");
+        } catch (e) {
+            err = e;
+        }
+        expect(err.message).toBe("test");
     });
 
     test("exists", async () => {

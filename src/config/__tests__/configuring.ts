@@ -46,6 +46,12 @@ describe("readConfigFile", () => {
         const config = await readConfigFile();
         expect(config.templateDir).toBe("./template-dir");
     });
+
+    test("Should return default if the file doesn't exist", async () => {
+        (fileUtils as any).setMockFn(fileUtils.exists, () => false);
+        const config = await readConfigFile();
+        expect(config.templateDir).toBe(new Config().templateDir);
+    });
 });
 
 describe("getConfiguration", () => {

@@ -84,4 +84,20 @@ content
         await run(args);
         expect(ok).toBeTruthy();
     });
+
+    test("Should call logError if the args are not validated", async () => {
+        const args = ["node", "./index.ts"];
+        const mock = jest.fn();
+        (logging as any).setMockFn(logging.logError, mock);
+        await run(args);
+        expect(mock).toBeCalled();
+    });
+
+    test("Should log arguments", async () => {
+        const args = ["node", "./index.ts", "test", "comps/App", "-something"];
+        const mock = jest.fn();
+        (logging as any).setMockFn(logging.logInfo, mock);
+        await run(args);
+        expect(mock).toBeCalledWith("Arguments: ");
+    });
 });
