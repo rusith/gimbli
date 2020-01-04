@@ -1,12 +1,12 @@
 /* tslint:disable:no-trailing-whitespace */
 import * as fs from "fs";
 import * as path from "path";
-import * as cliUtils from "../cli/cliUtils";
 import {run} from "../index";
 import * as logging from "../logging/logs";
+import * as cliUtils from "../utils/cliUtils";
 jest.mock("fs");
 jest.mock("../logging/logs");
-jest.mock("../cli/cliUtils");
+jest.mock("../utils/cliUtils");
 
 describe("run", () => {
     test("Should call correct apis for simple template", async () => {

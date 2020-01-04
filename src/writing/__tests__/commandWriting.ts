@@ -1,11 +1,11 @@
 import * as fsPath from "path";
-import * as cliUtils from "../../cli/cliUtils";
 import {ICommandSet, IWriteFileCommand} from "../../models";
+import * as cliUtils from "../../utils/cliUtils";
 import * as fileUtils from "../../utils/fileUtils";
 import {writeCommands, writeFileCommand} from "../commandWriting";
 
 jest.mock("../../utils/fileUtils");
-jest.mock("../../cli/cliUtils");
+jest.mock("../../utils/cliUtils");
 
 describe("writeFileCommand", () => {
     test("Should call the internal write function with correct data", async () => {
@@ -98,7 +98,7 @@ describe("write", () => {
         (cliUtils as any).setMockFn(cliUtils.getConfirmation, mock);
         (fileUtils as any).setMockFn(fileUtils.exists,  jest.fn().mockReturnValue(true));
 
-        const message = `This file is going to be replaced.
+        const message = `\nThis file is going to be replaced.
 * /rusith/app/App.tsx
 
 Do you want to continue?`;
@@ -125,7 +125,7 @@ Do you want to continue?`;
         (cliUtils as any).setMockFn(cliUtils.getConfirmation, mock);
         (fileUtils as any).setMockFn(fileUtils.exists,  jest.fn().mockReturnValue(true));
 
-        const message = `These files are going to be replaced.
+        const message = `\nThese files are going to be replaced.
 * /rusith/app/App.tsx
 * /rusith/app/App.module.tsx
 

@@ -1,7 +1,7 @@
 import * as path from "path";
-import {getConfirmation} from "../cli/cliUtils";
 import {logInfo} from "../logging/logs";
 import {ICommandSet, IWriteFileCommand} from "../models";
+import {getConfirmation} from "../utils/cliUtils";
 import {createDirectory, exists, writeFile} from "../utils/fileUtils";
 
 export async function writeCommands(commands: ICommandSet): Promise<any> {
@@ -11,7 +11,7 @@ export async function writeCommands(commands: ICommandSet): Promise<any> {
     })).filter((f) => f.exist);
 
     if (alreadyExistingFiles.length) {
-        let message = `${(alreadyExistingFiles.length > 1) ? "These files are" : "This file is"} going to be replaced.`;
+        let message = `\n${(alreadyExistingFiles.length > 1) ? "These files are" : "This file is"} going to be replaced.`;
         message = alreadyExistingFiles.reduce((current, next) => {
             return current + `
 * ${next.file.fullPath}`;

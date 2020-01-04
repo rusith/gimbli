@@ -1,4 +1,4 @@
-import {colors} from "../../cli/cliUtils";
+import {colors} from "../../utils/cliUtils";
 import {logError, logInfo, logSuccess, logWarning} from "../logs";
 
 describe("logInfo", () => {

@@ -1,5 +1,4 @@
 /* tslint:disable:no-trailing-whitespace */
-import {getRelevantArguments} from "./cli/cliUtils";
 import {validate} from "./cli/commandLineInputValidation";
 import {readArguments} from "./cli/readCommands";
 import {getConfiguration} from "./config/configuring";
@@ -8,6 +7,7 @@ import {objectify} from "./objectifying/objectifier";
 import {processTemplate} from "./processing/templateProcessing";
 import {readTemplate} from "./reading/readingTemplate";
 import {findTemplate} from "./templateDiscovery/templateFinding";
+import {getRelevantArguments} from "./utils/cliUtils";
 import {writeCommands} from "./writing/commandWriting";
 
 const banner = `
@@ -39,7 +39,7 @@ export async function run(args: string[]) {
         for (const arg of command.args) {
             const accepted = objects.args.find((a) => a.name === arg.name);
             if (accepted) {
-                logInfo(`  ${accepted.name}: ${accepted.value}`);
+                logInfo(`  ${accepted.name}: ${JSON.stringify(accepted.value)}`);
             } else {
                 logWarning(`  ${arg.name}: ignored (not declared in template)`);
             }

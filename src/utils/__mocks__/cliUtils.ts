@@ -1,4 +1,4 @@
-import {mapMocks} from "../../utils/mocking";
+import {mapMocks} from "../mocking";
 const original = jest.requireActual("../cliUtils");
 
 let getRelevantArgumentsMock: any = original.getRelevantArguments;

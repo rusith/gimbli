@@ -1,4 +1,4 @@
-import {colors, getColoredText} from "../cli/cliUtils";
+import {colors, getColoredText} from "../utils/cliUtils";
 
 export function logInfo(message: string) {
     global.console.log(message);
