@@ -23,7 +23,7 @@ Or you can use NPX to run Gimbli (`npx gimbli`)
 
 ## Reporting Issues
 
-This tools is still young and needs feedback to improve. if you find anything wrong, just add an issue in [Github](https://github.com/rusith/gimbli/issues)
+This tool is still young and needs feedback to improve. if you find anything wrong, just add an issue in [Github](https://github.com/rusith/gimbli/issues)
 
 
 ## Why This?
