@@ -31,7 +31,7 @@
     "handlebars"
   ],
   "author": "Shanaka Rusith",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/rusith/gimbli/issues"
   },

@@ -12,16 +12,37 @@ export function findFileSections(fileContent: string): IFileSection[] {
     const startMatches = matchMultiple(startRegex, fileContent);
     const endMatches = matchMultiple(endRegex, fileContent);
 
-    return startMatches.map((match, index) => {
-        const end = endMatches[index];
-        const sub = fileContent.substring(match.end, end.start);
+    return startMatches.map((start, index) => {
+        // Take the next ends after end of start
+        let toIndex = fileContent.length - 1;
+        if (startMatches.length > (index + 1)) {
+            toIndex = startMatches[index + 1].start;
+        }
+        const nextEnds = endMatches.filter((e) => e.start < toIndex && e.start > start.end)
+            .sort((e) => e.start);
+        if (!nextEnds.length) {
+            return;
+        }
+
+        const sub = fileContent.substring(start.end, nextEnds[0].start);
         const eolEx = EOL.exec(sub);
         return {
-            config: match.groups[0],
+            config: start.groups[0],
             content: (eolEx && eolEx.index === 0) ? sub.replace(EOL, "") : sub,
-            start: match.start,
+            start: start.start,
         };
     });
+
+    // return startMatches.map((match, index) => {
+    //     const end = endMatches[index];
+    //     const sub = fileContent.substring(match.end, end.start);
+    //     const eolEx = EOL.exec(sub);
+    //     return {
+    //         config: match.groups[0],
+    //         content: (eolEx && eolEx.index === 0) ? sub.replace(EOL, "") : sub,
+    //         start: match.start,
+    //     };
+    // });
 }
 
 export function objectify(template: ITemplate): ITemplateDefinition {
