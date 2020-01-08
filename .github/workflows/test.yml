@@ -2,7 +2,7 @@ name: Test
 on: 
   push:
     branches-ignore:
-      - 'releases'
+      - 'release'
 env:
   NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 jobs:
