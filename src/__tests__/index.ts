@@ -100,4 +100,43 @@ content
         await run(args);
         expect(mock).toBeCalledWith("Arguments: ");
     });
+
+    test("Must show accepted parameter names", async () => {
+        const args = ["node", "./index.ts", "test", "comps/App", "-key1", "1"];
+        (fs as any).setMockFn(fs.readdir, (p, opt, callback) => {
+            if (p === path.join(process.cwd())) {
+                callback(null, [
+                    {
+                        isDirectory: () => true,
+                        name: "templates",
+                    },
+                ]);
+            } else if (p === path.join(process.cwd(), "templates")) {
+                callback(null, [
+                    {
+                        isFile: () => true,
+                        name: "test.gimbli",
+                    },
+                ]);
+            }
+        });
+
+        const content = `@#args
+key1
+#@`;
+        (fs as any).setMockFn(fs.readFile, (p, callback) => {
+            callback(null, content);
+        });
+
+        (fs as any).setMockFn(fs.existsSync, (p) => !path.basename(p).startsWith("gimbli") );
+        (cliUtils as any).setMockFn(cliUtils.getConfirmation, async () => true);
+
+        let ok = false;
+        (logging as any).setMockFn(logging.logInfo, (message) => {
+            ok = message === `  key1: 1`;
+        });
+        await run(args);
+
+        expect(ok).toBeTruthy();
+    });
 });

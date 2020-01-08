@@ -118,6 +118,74 @@ contentOne
         const result = findFileSections(text);
         expect(result[0].content).toBe("  contentOne  ");
     });
+
+    test("Last end of section before end of file should be taken as the end of section", () => {
+        const content = `
+@#file($name.txt)
+#@
+#@
+`;
+        const fileSections = findFileSections(content);
+        expect(fileSections[0].content).toBe("#@\n");
+    });
+
+    test("Last end of section before next section should be taken as the end of section", () => {
+        const content = `
+@#file($name.txt)
+#@
+#@
+@#file($name.css)
+#@
+`;
+        const fileSections = findFileSections(content);
+        expect(fileSections.length).toBe(2);
+        expect(fileSections[0].content).toBe("#@\n");
+    });
+
+    test("Should be able to handle big content with end of section inside", () => {
+        const content = `
+@#file($name.txt)
+
+        const fileSections = findFileSections(content);
+        expect(fileSections.length).toBe(2);
+        expect(fileSections[0].content).toBe("#@\n");
+    });
+
+    test("Should be able to handle big content with end of section inside", () => {
+        const content = \`
+#@
+#@
+@#file($name.css)
+content
+#@
+content
+#@
+`;
+        const fileSections = findFileSections(content);
+        expect(fileSections.length).toBe(2);
+        expect(fileSections[0].content).toBe(`
+        const fileSections = findFileSections(content);
+        expect(fileSections.length).toBe(2);
+        expect(fileSections[0].content).toBe("#@
+");
+    });
+
+    test("Should be able to handle big content with end of section inside", () => {
+        const content = \`
+#@\n`);
+
+        expect(fileSections[1].content).toBe(`content
+#@
+content\n`);
+    });
+
+    test("Should throw if there are no matching endings", () => {
+        const content = `
+@#file($name.txt)
+some content
+`;
+        expect(() => findFileSections(content)).toThrowError(`Syntax Error! No ending found for the file section at line 1`);
+    });
 });
 
 describe("objectify", () => {
@@ -431,6 +499,21 @@ key
         expect(result.start).toBe(1);
         expect(result.end).toBe(15);
     });
+
+    test("Should ignore empty lines in arg definition", () => {
+
+        const content = `
+@# args
+key1
+  
+key2
+#@
+`;
+        const result = findArgSection(content);
+        expect(result.arguments.length).toBe(2);
+        expect(result.arguments[0]).toBe("key1");
+        expect(result.arguments[1]).toBe("key2");
+    });
 });
 
 describe("findIfs", () => {
@@ -511,65 +594,5 @@ describe("findIfForFileSection", () => {
 
         const result = findIfForFileSection(content, fileSection, ifs);
         expect(result).toBe(ifs[1]);
-    });
-
-    test("Last end of section before end of file should be taken as the end of section", () => {
-        const content = `
-@#file($name.txt)
-#@
-#@
-`;
-        const fileSections = findFileSections(content);
-        expect(fileSections[0].content).toBe("#@\n");
-    });
-
-    test("Last end of section before next section should be taken as the end of section", () => {
-        const content = `
-@#file($name.txt)
-#@
-#@
-@#file($name.css)
-#@
-`;
-        const fileSections = findFileSections(content);
-        expect(fileSections.length).toBe(2);
-        expect(fileSections[0].content).toBe("#@\n");
-    });
-
-    test("Should be able to handle big content with end of section inside", () => {
-        const content = `
-@#file($name.txt)
-
-        const fileSections = findFileSections(content);
-        expect(fileSections.length).toBe(2);
-        expect(fileSections[0].content).toBe("#@\n");
-    });
-
-    test("Should be able to handle big content with end of section inside", () => {
-        const content = \`
-#@
-#@
-@#file($name.css)
-content
-#@
-content
-#@
-`;
-        const fileSections = findFileSections(content);
-        expect(fileSections.length).toBe(2);
-        expect(fileSections[0].content).toBe(`
-        const fileSections = findFileSections(content);
-        expect(fileSections.length).toBe(2);
-        expect(fileSections[0].content).toBe("#@
-");
-    });
-
-    test("Should be able to handle big content with end of section inside", () => {
-        const content = \`
-#@\n`);
-        
-        expect(fileSections[1].content).toBe(`content
-#@
-content\n`);
     });
 });

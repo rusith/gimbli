@@ -21,7 +21,7 @@ export function findFileSections(fileContent: string): IFileSection[] {
         const nextEnds = endMatches.filter((e) => e.start < toIndex && e.start > start.end)
             .sort((e) => e.start);
         if (!nextEnds.length) {
-            return;
+            throw new Error("Syntax Error! No ending found for the file section at line " + start.start);
         }
 
         const sub = fileContent.substring(start.end, nextEnds[0].start);
@@ -32,17 +32,6 @@ export function findFileSections(fileContent: string): IFileSection[] {
             start: start.start,
         };
     });
-
-    // return startMatches.map((match, index) => {
-    //     const end = endMatches[index];
-    //     const sub = fileContent.substring(match.end, end.start);
-    //     const eolEx = EOL.exec(sub);
-    //     return {
-    //         config: match.groups[0],
-    //         content: (eolEx && eolEx.index === 0) ? sub.replace(EOL, "") : sub,
-    //         start: match.start,
-    //     };
-    // });
 }
 
 export function objectify(template: ITemplate): ITemplateDefinition {
